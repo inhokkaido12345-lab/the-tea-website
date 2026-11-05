@@ -178,3 +178,5 @@ GitHub PagesのURLは [The TEA サンプルサイト](https://inhokkaido12345-la
 - 全画像、Noto Sans JP、ページ内リンク、idの重複なし、FAQのクリック、お知らせのキーボード開閉を確認。
 - JavaScriptは0本。ブラウザー実行エラーなし。Instagramは指定URLへのリンクを確認し、リンク先のログイン後の内容までは検証していません。
 - GitHub Pagesを有効化し、`main` の `dist/` を配信するワークフローを追加。独自ドメインは未設定。Sitesの非公開版は別の配信先として維持します。
+- 2026-11-05、[GitHub Pagesの初回配信](https://github.com/inhokkaido12345-lab/the-tea-website/actions/runs/42009744594)が成功。配信対象コミットは `246c28fdbffa40cf6fd24604b258112799eecd3c`。
+- 公開URLをChromeの幅1280 / 390pxで確認。ホームとポリシーページがHTTP 200、全7画像・Noto Sans JPの読み込み成功、横はみ出し・リンク切れ・ブラウザー実行エラーなし。ダミー表示と `noindex, nofollow` を維持。
