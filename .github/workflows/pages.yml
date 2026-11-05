@@ -1,0 +1,51 @@
+# 【自動公開の入口】GitHub ActionsはGitHub上で決まった手順を動かす仕組み。
+# このサイトではHTML/CSSを加工せず、dist/だけをGitHub Pagesへ配信します。
+# デザインや本文の編集場所は引き続きdist/。npmやビルドコマンドは不要です。
+name: Publish The TEA to GitHub Pages
+
+# 【実行タイミング】mainの配信用ファイルを変更した時、または手動実行時。
+# ブランチ名や配信先を変える時は、ここ・path・READMEを一緒に更新します。
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dist/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+# 【権限】通常はソースの読み取りだけ。公開ジョブだけに追加権限を与えます。
+# 個人のアクセストークンをファイルやSecretsに追加する必要はありません。
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Read repository files
+        uses: actions/checkout@v6
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      # 【配信範囲】公開するのはdist/内のHTML・CSS・素材だけ。
+      # pathを「.」にするとREADME等も配信対象になるため、安易に変更しない。
+      - name: Upload website files only
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+      - name: Publish website
+        id: deployment
+        uses: actions/deploy-pages@v4

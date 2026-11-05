@@ -22,6 +22,7 @@ the-tea/
 │  ├─ privacy.html               ← プライバシーポリシーの準備枠
 │  └─ assets/                    ← Web用写真・実ロゴ・Noto Sans JP・フォントライセンス
 ├─ .openai/hosting.json          ← Sitesの識別情報と配信ディレクトリ。認証情報ではない
+├─ .github/workflows/pages.yml   ← dist/だけをGitHub Pagesに自動公開する設定
 ├─ .gitignore                    ← Gitに入れないローカルファイル
 └─ README.md                     ← この説明書
 ```
@@ -127,11 +128,25 @@ python -m http.server 4173 --bind 127.0.0.1 --directory dist
 ## 公開・GitHubの扱い
 
 - GitHubはThe TEA専用リポジトリとして扱います。TLHのリポジトリを変更しません。
-- 未完成のため、新規リポジトリは非公開を基本とします。公開範囲の変更は別途判断。
+- 初期リポジトリは非公開で作成。2026-11-05にユーザーからGitHub Pages配信の依頼と、リポジトリ公開化の明示承認を受け、公開リポジトリへ変更しました。
+- このアカウントの現在のプランでは非公開リポジトリのPages利用ができないため、GitHubのソース・README・履歴も公開されています。元の写真・PSD・ローカル検証ファイル・認証情報はリポジトリに含めません。
 - 初期ファイルの登録後、既存の保護ブランチや正式サイトへのリリースは個別に確認します。
 - `.openai/hosting.json` はSites用です。既存の `project_id` を勝手に作り直さないでください。
-- GitHubにファイルがあることと、サイトが配信済みであることは別です。GitHub Pagesの設定やカスタムドメインは自動で変更しません。
+- GitHubにファイルがあることと、サイトが配信済みであることは別です。Pagesの配信が完了したことはActionsの成功と実際のURLで確認します。カスタムドメインは設定しません。
 - `dist/` だけがWeb配信対象。README、元データ、検証スクリーンショット、認証情報を配信対象に入れないでください。
+
+### GitHub Pagesの仕組みと更新方法
+
+`.github/workflows/pages.yml` はGitHub公式のPages用Actionsで、`dist/` の内容を加工せず配信します。通常のサイト編集はHTML/CSSだけで完結し、ローカルのビルド環境は不要です。GitHub Actionsは公開のための処理で、訪問者のブラウザーでJavaScriptを実行するものではありません。
+
+1. `dist/index.html`、`dist/style.css`、または素材を編集してローカル確認。
+2. 変更をコミットし、`main` にpush。
+3. GitHubの **Actions → Publish The TEA to GitHub Pages** が成功したことを確認。
+4. 配信されたページを再読み込みして、内容を確認。
+
+READMEだけの変更では再配信しません。手動で再配信したい時はActionsから **Run workflow** を選びます。Pages設定のSourceは **GitHub Actions** を使用します。`dist/` はブランチ方式のSourceでは直接選択できないため、このワークフローで配信対象を指定しています。
+
+GitHub PagesのURLは [The TEA サンプルサイト](https://inhokkaido12345-lab.github.io/the-tea-website/) です。設定はGitHub Actions方式・HTTPS有効です。配信処理中は反映に時間がかかる場合があります。相対パスを使っているため、`/the-tea-website/` の下でも画像・CSS・フォント・ポリシーページを参照できます。ダミー表示と `noindex, nofollow` は維持します。
 
 ## 正式公開前のチェック
 
@@ -157,9 +172,9 @@ python -m http.server 4173 --bind 127.0.0.1 --directory dist
 
 ## 保存先と検証結果
 
-- GitHub： [inhokkaido12345-lab/the-tea-website](https://github.com/inhokkaido12345-lab/the-tea-website)（非公開）。
+- GitHub： [inhokkaido12345-lab/the-tea-website](https://github.com/inhokkaido12345-lab/the-tea-website)（公開・ユーザー承認済み）。
 - ローカル：`C:\Users\inhok\Documents\ChatGPT\TheTEA\the-tea`。
 - 2026-11-05、Chromeで幅1280 / 768 / 390 / 320pxを確認。ホームとポリシーページに横はみ出しなし。
 - 全画像、Noto Sans JP、ページ内リンク、idの重複なし、FAQのクリック、お知らせのキーボード開閉を確認。
 - JavaScriptは0本。ブラウザー実行エラーなし。Instagramは指定URLへのリンクを確認し、リンク先のログイン後の内容までは検証していません。
-- GitHub Pagesや独自ドメインは未設定。Sitesの配信状況は作業完了時の報告に従ってください。
+- GitHub Pagesを有効化し、`main` の `dist/` を配信するワークフローを追加。独自ドメインは未設定。Sitesの非公開版は別の配信先として維持します。
