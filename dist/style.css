@@ -11,7 +11,10 @@
 :root {
 
   /* 【ブランドパレット】提供画像の10色をそのまま保存。
-     色を変えると全体に影響。装飾用の中間色を小さな本文に使うと読みにくいので注意。 */
+     配色の役割はCLASSIC MENU / QUICK MENUに合わせる。生成りの地に茶色の文字、
+     グレージュは小さな見出し帯、ベージュは選択・強調。大きな色面で区切らない。
+     青=ICE、赤=HOTという意味を保つため、このサイトでは汎用の装飾背景に使わない。
+     オレンジや緑は大きな見出し用。小さい本文は茶色、強調リンクは赤茶を使う。 */
   --sand:#D9B68B;
   --cream:#F7F2EA;
   --stone:#D8CEC2;
@@ -111,8 +114,8 @@ a:hover {
   transform:translateY(0)
 }
 .preview-note {
-  background:var(--brown);
-  color:var(--cream);
+  background:var(--stone);
+  color:var(--brown);
   text-align:center;
   font-size:10px;
   letter-spacing:.04em;
@@ -219,8 +222,8 @@ a:hover {
   display:inline-flex;
   align-items:center;
   gap:40px;
-  background:var(--rust);
-  color:var(--cream);
+  background:var(--sand);
+  color:var(--brown);
   padding:15px 22px;
   font-size:12px;
   border-radius:var(--radius);
@@ -231,6 +234,7 @@ a:hover {
 }
 .button:hover {
   background:var(--brown);
+  color:var(--cream);
   text-decoration:none
 }
 .hero-bottom {
@@ -286,7 +290,7 @@ a:hover {
   position:absolute;
   right:-16px;
   top:34px;
-  background:var(--blue);
+  background:var(--sand);
   color:var(--brown);
   width:130px;
   height:130px;
@@ -312,7 +316,8 @@ a:hover {
   margin-top:4px
 }
 .ribbon {
-  background:var(--sand);
+  background:var(--cream);
+  border-block:1px solid var(--line);
   display:flex;
   justify-content:space-around;
   gap:25px;
@@ -382,7 +387,7 @@ h2 {
   margin:auto
 }
 .about-art {
-  background:var(--blue);
+  background:var(--cream);
   aspect-ratio:1;
   max-width:390px;
   border-radius:50% 50% 8px 8px;
@@ -409,12 +414,17 @@ h2 {
 }
 
 /* 【商品一覧】3列のGrid。写真枠の高さを揃え、写真自体の縦横比は保持。
-   商品を増やしても列数を手計算しない。並び替えはHTMLの記事順を変更するだけ。 */
+   商品を増やしても列数を手計算しない。並び替えはHTMLの記事順を変更するだけ。
+   CLASSIC MENUのグレージュは商品名の帯だけに使い、セクションの地は生成り。
+   QUICK MENUのように分類を大きな色見出しで示す。小さな説明文まで同じ色にしない。 */
 .menu-section {
-  background:var(--stone)
+  background:var(--cream)
 }
 .menu-section .section-label {
-  border-color:var(--taupe)
+  border-color:var(--stone)
+}
+.menu-section h2 {
+  color:var(--terracotta)
 }
 .menu-grid {
   display:grid;
@@ -448,6 +458,8 @@ h2 {
   display:flex;
   align-items:center;
   justify-content:space-between;
+  background:var(--stone);
+  padding:8px 10px;
   margin-top:22px;
   gap:12px
 }
@@ -481,12 +493,15 @@ h2 {
   grid-template-columns:1fr 1fr;
   gap:70px
 }
+.community h2 {
+  color:var(--sage)
+}
 .community-layout>div>p {
   font-size:13px;
   line-height:2.3
 }
 .coming-soon {
-  border-left:3px solid var(--terracotta);
+  border-left:3px solid var(--sage);
   padding:12px 0 12px 25px;
   margin-top:30px
 }
@@ -499,13 +514,14 @@ h2 {
   margin-top:10px
 }
 
-/* 【店舗案内】暖色の面で親しみを作る。住所確定まではダミー枠を明示。
-   本文は茶色なのでコントラストを維持できる。背景だけ変えた時も文字色との組合せを確認。 */
+/* 【店舗案内】CLASSIC MENUのように生成りの地と、項目を示す小さな帯を使う。
+   住所確定まではダミー枠を明示。店舗名の帯だけがグレージュ、本文は茶色。
+   店舗追加時も面全体をベージュで塗らず、地と強調の役割を揃える。 */
 .shops-section {
-  background:var(--sand)
+  background:var(--cream)
 }
 .shops-section .section-label {
-  border-color:var(--taupe)
+  border-color:var(--stone)
 }
 .shops-layout {
   display:grid;
@@ -525,10 +541,13 @@ h2 {
 }
 .shop-card {
   background:var(--cream);
+  border:1px solid var(--stone);
   padding:35px;
   border-radius:var(--radius)
 }
 .shop-card h3 {
+  background:var(--stone);
+  padding:8px 12px;
   font-size:27px;
   margin-top:20px
 }
@@ -628,8 +647,9 @@ details>p {
   font-size:20px
 }
 .contact {
-  background:var(--brown);
-  color:var(--cream)
+  background:var(--cream);
+  color:var(--brown);
+  border-block:1px solid var(--line)
 }
 .contact-layout {
   display:grid;
@@ -638,7 +658,7 @@ details>p {
   align-items:center
 }
 .contact .eyebrow {
-  color:var(--sand);
+  color:var(--rust);
   margin-bottom:20px
 }
 .contact h2 {
@@ -670,7 +690,7 @@ details>p {
   justify-content:space-between
 }
 .instagram-card:hover {
-  border-color:var(--sand);
+  border-color:var(--brown);
   text-decoration:none
 }
 .site-footer {
