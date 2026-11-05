@@ -1,0 +1,1106 @@
+/* 【CSSの読み方】HTMLが内容、CSSが見た目。このファイルだけで全ページを装飾します。
+   初めての変更は下の色変数から。セレクター名はHTMLのclassと対応します。
+   レイアウトを変えたら横幅390pxと1280pxの両方で確認。詳しい入口はREADMEの魔改造MAP。 */
+@font-face {
+  font-family:"Noto Sans JP";
+  src:url("assets/noto-sans-jp.ttf") format("truetype");
+  font-style:normal;
+  font-weight:100 900;
+  font-display:swap
+}
+:root {
+
+  /* 【ブランドパレット】提供画像の10色をそのまま保存。
+     色を変えると全体に影響。装飾用の中間色を小さな本文に使うと読みにくいので注意。 */
+  --sand:#D9B68B;
+  --cream:#F7F2EA;
+  --stone:#D8CEC2;
+  --taupe:#8A7461;
+  --brown:#362318;
+  --terracotta:#BC5529;
+  --rust:#8C2804;
+  --blue:#AECFF2;
+  --rose:#B85A4F;
+  --sage:#72807A;
+  --bg:var(--cream);
+  --ink:var(--brown);
+  --accent:var(--rust);
+  --line:var(--stone);
+  --font:"Noto Sans JP",sans-serif;
+  --radius:3px;
+}
+
+/* 【土台】box-sizingで余白を幅に含める。画像は親要素より大きくしない。
+   本文の余白はwrapとsectionで統一。個別の幅を足す前に共通ルールを確認。 */
+* {
+  box-sizing:border-box
+}
+html {
+  scroll-behavior:smooth;
+  scroll-padding-top:24px
+}
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font);
+  font-size:15px;
+  line-height:1.95;
+  -webkit-font-smoothing:antialiased
+}
+a {
+  color:inherit;
+  text-decoration:none
+}
+img {
+  max-width:100%;
+  height:auto;
+  display:block
+}
+h1,h2,h3,p,figure {
+  margin:0
+}
+h1,h2,h3 {
+  line-height:1.5
+}
+button,a,summary {
+  -webkit-tap-highlight-color:transparent
+}
+a:focus-visible,summary:focus-visible {
+  outline:3px solid var(--rust);
+  outline-offset:6px
+}
+a:hover {
+  text-decoration:underline;
+  text-underline-offset:6px
+}
+.wrap {
+  width:min(1240px,calc(100% - 96px));
+  margin-inline:auto
+}
+.section {
+  padding-block:104px
+}
+.eyebrow {
+  font-size:10px;
+  font-weight:650;
+  letter-spacing:.15em
+}
+.sr-only {
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0
+}
+.skip-link {
+  position:fixed;
+  z-index:10;
+  top:8px;
+  left:8px;
+  padding:8px 20px;
+  background:var(--brown);
+  color:var(--cream);
+  transform:translateY(-150%)
+}
+.skip-link:focus {
+  transform:translateY(0)
+}
+.preview-note {
+  background:var(--brown);
+  color:var(--cream);
+  text-align:center;
+  font-size:10px;
+  letter-spacing:.04em;
+  padding:7px 20px
+}
+.small-note,.section-footnote {
+  font-size:11px;
+  line-height:1.9
+}
+.small-note {
+  display:block;
+  margin-top:25px
+}
+.sample-tag {
+  display:inline-block;
+  font-size:10px;
+  letter-spacing:.03em;
+  border:1px solid currentColor;
+  border-radius:2px;
+  padding:2px 8px;
+  line-height:1.8
+}
+
+/* 【ヘッダー】PCは横並び、スマホは下のメディアクエリーで目次を2行目へ。
+   名前はテキスト表示。正式なクマロゴは紹介セクションで元データから書き出したものを使用。 */
+.site-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:106px;
+  gap:28px
+}
+.wordmark {
+  font-size:36px;
+  font-weight:800;
+  letter-spacing:-.07em;
+  line-height:1;
+  white-space:nowrap
+}
+.wordmark>span:first-child {
+  font-size:18px;
+  letter-spacing:-.07em;
+  vertical-align:middle
+}
+.brand-dot {
+  color:var(--terracotta)
+}
+.site-header nav {
+  display:flex;
+  gap:28px;
+  font-size:12px;
+  font-weight:550
+}
+.header-instagram {
+  font-size:11px;
+  border-bottom:1px solid var(--brown);
+  padding-bottom:4px
+}
+.header-instagram>span[aria-hidden] {
+  margin-left:18px;
+  font-size:18px
+}
+
+/* 【ヒーロー】左右をGridで分ける。見出しの大きさはclampで画面幅に応じて変化。
+   写真の切り取りはobject-fit、被写体の位置はobject-position。元写真は破壊しません。 */
+.hero {
+  display:grid;
+  grid-template-columns:1fr 1.04fr;
+  min-height:650px;
+  padding-bottom:56px;
+  gap:40px
+}
+.hero-copy {
+  padding:54px 0 0;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start
+}
+.tiny-dot {
+  display:inline-block;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--terracotta);
+  margin-right:10px;
+  vertical-align:middle
+}
+.hero h1 {
+  font-size:clamp(40px,4.25vw,65px);
+  letter-spacing:-.045em;
+  line-height:1.55;
+  margin-top:33px;
+  font-weight:750
+}
+.period {
+  color:var(--terracotta)
+}
+.hero-description {
+  margin-top:24px;
+  line-height:2.2;
+  font-size:14px
+}
+.button {
+  display:inline-flex;
+  align-items:center;
+  gap:40px;
+  background:var(--rust);
+  color:var(--cream);
+  padding:15px 22px;
+  font-size:12px;
+  border-radius:var(--radius);
+  margin-top:32px
+}
+.button span {
+  font-size:22px
+}
+.button:hover {
+  background:var(--brown);
+  text-decoration:none
+}
+.hero-bottom {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:100%;
+  font-size:9px;
+  margin-top:auto;
+  padding-top:40px;
+  letter-spacing:.08em
+}
+.hero-bottom a {
+  font-size:9px
+}
+.hero-bottom a span {
+  margin-left:14px;
+  font-size:20px
+}
+.hero-visual {
+  position:relative;
+  min-width:0;
+  min-height:590px;
+  border-radius:160px 4px 4px 4px;
+  isolation:isolate
+}
+.hero-photo {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:50% 50%;
+  position:absolute;
+  border-radius:inherit
+}
+.hero-visual:after {
+  content:"";
+  position:absolute;
+  inset:50% 0 0;
+  background:linear-gradient(transparent,rgba(54,35,24,.45));
+  border-radius:inherit;
+  z-index:0
+}
+.photo-note {
+  position:absolute;
+  bottom:25px;
+  left:28px;
+  font-size:9px;
+  letter-spacing:.12em;
+  color:var(--cream);
+  z-index:1
+}
+.local-stamp {
+  position:absolute;
+  right:-16px;
+  top:34px;
+  background:var(--blue);
+  color:var(--brown);
+  width:130px;
+  height:130px;
+  border-radius:50%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  transform:rotate(10deg);
+  z-index:1;
+  box-shadow:0 0 0 6px var(--cream)
+}
+.local-stamp span:first-child {
+  font-size:10px
+}
+.local-stamp strong {
+  font-size:17px;
+  font-weight:700
+}
+.local-stamp span:last-child {
+  font-size:7px;
+  letter-spacing:.1em;
+  margin-top:4px
+}
+.ribbon {
+  background:var(--sand);
+  display:flex;
+  justify-content:space-around;
+  gap:25px;
+  overflow:hidden;
+  padding:16px 24px;
+  font-size:11px;
+  letter-spacing:.12em;
+  font-weight:600
+}
+.ribbon span {
+  white-space:nowrap
+}
+.ribbon span:nth-child(2) {
+  font-size:12px
+}
+
+/* 【共通見出し】各カテゴリーに番号と日英ラベルを置く。番号は表示用なので自由に変更可。
+   h2の文章を短くすると余白が増える。長文を入れる時は横幅の狭い画面で確認。 */
+.section-label {
+  display:flex;
+  justify-content:space-between;
+  border-top:1px solid var(--line);
+  padding-top:17px;
+  font-size:10px;
+  letter-spacing:.1em;
+  margin-bottom:60px
+}
+.section-label span:last-child {
+  letter-spacing:.04em
+}
+h2 {
+  font-size:clamp(28px,3vw,43px);
+  letter-spacing:-.035em;
+  font-weight:700;
+  line-height:1.65
+}
+.section-heading {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:30px;
+  margin-bottom:42px
+}
+.section-heading .eyebrow {
+  margin-bottom:13px
+}
+.section-heading>p {
+  font-size:13px
+}
+.text-link {
+  font-size:12px;
+  border-bottom:1px solid currentColor;
+  padding-bottom:7px;
+  display:inline-flex;
+  align-items:center;
+  gap:30px
+}
+.text-link span[aria-hidden] {
+  font-size:20px
+}
+.about-layout {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;
+  gap:100px;
+  max-width:990px;
+  margin:auto
+}
+.about-art {
+  background:var(--blue);
+  aspect-ratio:1;
+  max-width:390px;
+  border-radius:50% 50% 8px 8px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:60px
+}
+.about-art img {
+  width:235px;
+  max-height:230px;
+  object-fit:contain
+}
+.about-art>span {
+  font-size:10px;
+  letter-spacing:.1em;
+  margin-top:25px
+}
+.about-copy p {
+  margin-top:23px;
+  font-size:13px;
+  line-height:2.3
+}
+
+/* 【商品一覧】3列のGrid。写真枠の高さを揃え、写真自体の縦横比は保持。
+   商品を増やしても列数を手計算しない。並び替えはHTMLの記事順を変更するだけ。 */
+.menu-section {
+  background:var(--stone)
+}
+.menu-section .section-label {
+  border-color:var(--taupe)
+}
+.menu-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:28px
+}
+.menu-image {
+  position:relative;
+  overflow:hidden;
+  aspect-ratio:1.1;
+  background:var(--cream);
+  border-radius:100px 3px 3px 3px
+}
+.menu-image img {
+  height:100%;
+  width:100%;
+  object-fit:cover
+}
+.menu-item:first-child .menu-image img {
+  object-fit:contain;
+  background:#d8d1ce
+}
+.item-number {
+  position:absolute;
+  z-index:1;
+  top:18px;
+  right:20px;
+  font-size:11px
+}
+.menu-title {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:22px;
+  gap:12px
+}
+.menu-title h3 {
+  font-size:21px;
+  font-weight:650
+}
+.menu-title>span {
+  font-size:9px;
+  letter-spacing:.12em
+}
+.menu-item>p {
+  font-size:11px;
+  margin-top:10px
+}
+.menu-meta {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  font-size:11px;
+  border-top:1px solid var(--taupe);
+  margin-top:18px;
+  padding-top:13px
+}
+.section-footnote {
+  margin-top:30px
+}
+.community-layout {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:70px
+}
+.community-layout>div>p {
+  font-size:13px;
+  line-height:2.3
+}
+.coming-soon {
+  border-left:3px solid var(--terracotta);
+  padding:12px 0 12px 25px;
+  margin-top:30px
+}
+.coming-soon h3 {
+  font-size:17px;
+  margin-top:12px
+}
+.coming-soon p {
+  font-size:12px;
+  margin-top:10px
+}
+
+/* 【店舗案内】暖色の面で親しみを作る。住所確定まではダミー枠を明示。
+   本文は茶色なのでコントラストを維持できる。背景だけ変えた時も文字色との組合せを確認。 */
+.shops-section {
+  background:var(--sand)
+}
+.shops-section .section-label {
+  border-color:var(--taupe)
+}
+.shops-layout {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center
+}
+.shops-layout h2 {
+  margin-top:16px
+}
+.shops-layout>div>p:not(.eyebrow) {
+  margin-top:23px;
+  font-size:13px
+}
+.shops-layout .text-link {
+  margin-top:27px
+}
+.shop-card {
+  background:var(--cream);
+  padding:35px;
+  border-radius:var(--radius)
+}
+.shop-card h3 {
+  font-size:27px;
+  margin-top:20px
+}
+.shop-card h3 span {
+  display:block;
+  font-size:13px;
+  margin-top:5px;
+  font-weight:500
+}
+dl {
+  margin:25px 0 0
+}
+dl>div {
+  display:grid;
+  grid-template-columns:85px 1fr;
+  gap:16px;
+  border-top:1px solid var(--line);
+  padding:12px 0;
+  font-size:12px
+}
+dt {
+  font-weight:600
+}
+dd {
+  margin:0
+}
+
+/* 【開閉UI】detailsはブラウザー標準の開閉部品。summary全体が押せる。
+   見た目だけのリンクにしない。open属性を付けると最初から開いた状態になります。 */
+details {
+  border-bottom:1px solid var(--line)
+}
+summary {
+  cursor:pointer;
+  list-style:none;
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  gap:24px;
+  padding:18px 0;
+  font-size:13px
+}
+summary::-webkit-details-marker {
+  display:none
+}
+summary:hover {
+  color:var(--rust)
+}
+details[open] summary {
+  color:var(--rust)
+}
+details[open] .expand-mark {
+  transform:rotate(45deg)
+}
+details>p {
+  font-size:12px;
+  line-height:2;
+  padding:0 20px 24px
+}
+.news-list {
+  border-top:1px solid var(--line)
+}
+.news-category {
+  font-size:10px;
+  min-width:80px;
+  border:1px solid var(--line);
+  text-align:center;
+  padding:2px 8px
+}
+.inline-sample {
+  font-size:8px;
+  color:var(--rust);
+  margin-left:10px;
+  letter-spacing:.08em
+}
+.expand-mark {
+  margin-left:auto;
+  font-size:21px;
+  transition:transform .2s
+}
+.faq {
+  padding-top:0
+}
+.faq-layout {
+  display:grid;
+  grid-template-columns:.8fr 1.2fr;
+  gap:70px
+}
+.faq-list {
+  border-top:1px solid var(--line)
+}
+.faq summary {
+  justify-content:space-between;
+  gap:20px
+}
+.faq summary span {
+  font-size:20px
+}
+.contact {
+  background:var(--brown);
+  color:var(--cream)
+}
+.contact-layout {
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:80px;
+  align-items:center
+}
+.contact .eyebrow {
+  color:var(--sand);
+  margin-bottom:20px
+}
+.contact h2 {
+  font-size:31px
+}
+.contact p:not(.eyebrow) {
+  font-size:13px;
+  margin-top:22px
+}
+.instagram-card {
+  display:flex;
+  flex-direction:column;
+  border:1px solid var(--taupe);
+  padding:26px 30px;
+  gap:15px;
+  border-radius:var(--radius)
+}
+.instagram-card>span {
+  font-size:10px;
+  letter-spacing:.1em
+}
+.instagram-card strong {
+  font-size:26px;
+  font-weight:500;
+  letter-spacing:-.035em
+}
+.instagram-card>span:last-of-type {
+  display:flex;
+  justify-content:space-between
+}
+.instagram-card:hover {
+  border-color:var(--sand);
+  text-decoration:none
+}
+.site-footer {
+  padding-block:50px 20px
+}
+.footer-top {
+  display:flex;
+  align-items:center;
+  gap:35px
+}
+.footer-top p {
+  font-size:11px
+}
+.back-top {
+  margin-left:auto;
+  font-size:10px
+}
+.site-footer nav {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px 25px;
+  font-size:10px;
+  margin-top:35px
+}
+.footer-bottom {
+  display:flex;
+  justify-content:space-between;
+  border-top:1px solid var(--line);
+  margin-top:30px;
+  padding-top:18px;
+  font-size:10px
+}
+.policy {
+  max-width:800px;
+  min-height:65vh
+}
+.policy h1 {
+  font-size:34px
+}
+.policy h2 {
+  font-size:23px;
+  margin-top:35px
+}
+.policy p,.policy ul {
+  font-size:14px;
+  margin-top:20px
+}
+
+/* 【レスポンシブ】メディアクエリーは指定幅以下の画面だけに適用。
+   PC用ルールを消すのではなく上書きする。スマホでの横はみ出しをoverflow:hiddenで隠さない。 */
+@media(min-width:1500px) {
+  .hero h1 {
+    font-size:65px
+  }
+  .hero {
+    min-height:710px
+  }
+  .hero-visual {
+    min-height:640px
+  }
+}
+@media(max-width:1000px) {
+  .wrap {
+    width:calc(100% - 56px)
+  }
+  .site-header {
+    gap:20px
+  }
+  .site-header nav {
+    gap:18px;
+    font-size:11px
+  }
+  .hero {
+    gap:25px;
+    min-height:590px
+  }
+  .hero-copy {
+    padding-top:30px
+  }
+  .hero h1 {
+    font-size:45px
+  }
+  .hero-visual {
+    min-height:540px;
+    border-top-left-radius:120px
+  }
+  .hero .eyebrow {
+    font-size:8px
+  }
+  .local-stamp {
+    width:108px;
+    height:108px;
+    right:-10px
+  }
+  .local-stamp strong {
+    font-size:15px
+  }
+  .about-layout {
+    gap:50px
+  }
+  .about-art {
+    padding:45px
+  }
+  .about-art>span {
+    font-size:8px
+  }
+  .shops-layout,.community-layout,.faq-layout,.contact-layout {
+    gap:40px
+  }
+  .menu-grid {
+    gap:18px
+  }
+  .menu-title h3 {
+    font-size:18px
+  }
+  .menu-title>span {
+    font-size:8px
+  }
+  .menu-meta {
+    align-items:flex-start;
+    flex-direction:column
+  }
+  .section {
+    padding-block:80px
+  }
+  .faq {
+    padding-top:0
+  }
+  .contact h2 {
+    font-size:26px
+  }
+  .instagram-card strong {
+    font-size:23px
+  }
+  .shop-card {
+    padding:25px
+  }
+}
+@media(max-width:700px) {
+  .wrap {
+    width:calc(100% - 40px)
+  }
+  .preview-note {
+    font-size:9px;
+    line-height:1.8;
+    padding:7px 16px
+  }
+  .site-header {
+    min-height:110px;
+    flex-wrap:wrap;
+    padding-block:20px 16px;
+    gap:18px
+  }
+  .wordmark {
+    font-size:32px
+  }
+  .wordmark>span:first-child {
+    font-size:16px
+  }
+  .site-header nav {
+    order:3;
+    width:100%;
+    justify-content:space-between;
+    gap:8px;
+    font-size:10px
+  }
+  .header-instagram {
+    margin-left:auto;
+    font-size:10px
+  }
+  .hero {
+    grid-template-columns:1fr;
+    gap:28px;
+    padding-bottom:30px
+  }
+  .hero-copy {
+    padding-top:22px
+  }
+  .hero h1 {
+    font-size:clamp(36px,10.5vw,57px);
+    margin-top:20px;
+    line-height:1.55
+  }
+  .hero .eyebrow {
+    font-size:8px
+  }
+  .hero-description {
+    font-size:13px;
+    margin-top:20px
+  }
+  .button {
+    padding:13px 20px;
+    margin-top:24px;
+    font-size:11px;
+    gap:28px
+  }
+  .hero-bottom {
+    display:none
+  }
+  .hero-visual {
+    min-height:0;
+    height:420px;
+    border-top-left-radius:110px;
+    margin-right:8px
+  }
+  .hero-photo {
+    object-position:50% 48%
+  }
+  .local-stamp {
+    top:22px;
+    right:-8px;
+    width:108px;
+    height:108px
+  }
+  .ribbon {
+    justify-content:center;
+    padding-block:13px
+  }
+  .ribbon span:first-child {
+    display:none
+  }
+  .ribbon span {
+    font-size:9px
+  }
+  .ribbon span:nth-child(2) {
+    font-size:10px
+  }
+  .section {
+    padding-block:60px
+  }
+  .section-label {
+    margin-bottom:34px;
+    font-size:9px;
+    padding-top:13px
+  }
+  .section-label span:last-child {
+    font-size:9px
+  }
+  h2 {
+    font-size:29px
+  }
+  .about-layout {
+    grid-template-columns:1fr;
+    gap:35px
+  }
+  .about-art {
+    max-width:270px;
+    width:100%;
+    margin-inline:auto;
+    padding:45px
+  }
+  .about-art img {
+    width:160px;
+    max-height:160px
+  }
+  .about-art>span {
+    font-size:8px;
+    margin-top:16px
+  }
+  .about-copy {
+    padding-inline:10px
+  }
+  .about-copy p {
+    font-size:13px;
+    margin-top:20px
+  }
+  .small-note {
+    font-size:10px
+  }
+  .section-heading {
+    align-items:flex-start;
+    flex-direction:column;
+    gap:18px;
+    margin-bottom:30px
+  }
+  .section-heading>p {
+    font-size:12px
+  }
+  .menu-grid {
+    grid-template-columns:1fr;
+    gap:34px
+  }
+  .menu-image {
+    aspect-ratio:1.25;
+    border-top-left-radius:100px
+  }
+  .menu-item:first-child .menu-image img {
+    object-fit:contain
+  }
+  .menu-title h3 {
+    font-size:23px
+  }
+  .menu-title>span {
+    font-size:9px
+  }
+  .menu-title {
+    margin-top:17px
+  }
+  .menu-meta {
+    flex-direction:row;
+    align-items:center
+  }
+  .menu-item>p {
+    font-size:12px
+  }
+  .section-footnote {
+    font-size:10px
+  }
+  .community-layout,.shops-layout,.faq-layout,.contact-layout {
+    grid-template-columns:1fr;
+    gap:30px
+  }
+  .community-layout>div>p {
+    font-size:12px
+  }
+  .shops-layout h2 {
+    margin-top:10px
+  }
+  .shop-card {
+    padding:25px
+  }
+  .news-category {
+    min-width:66px;
+    font-size:9px
+  }
+  .news summary {
+    gap:14px;
+    font-size:12px
+  }
+  .inline-sample {
+    display:block;
+    margin-left:0;
+    font-size:8px
+  }
+  .news .text-link {
+    font-size:11px
+  }
+  summary {
+    font-size:12px;
+    min-height:76px
+  }
+  .faq {
+    padding-top:0
+  }
+  .faq h2 br {
+    display:none
+  }
+  .faq h2 {
+    font-size:27px
+  }
+  .contact h2 {
+    font-size:27px
+  }
+  .instagram-card {
+    padding:24px
+  }
+  .instagram-card strong {
+    font-size:26px
+  }
+  .footer-top {
+    gap:20px;
+    flex-wrap:wrap
+  }
+  .footer-top p {
+    font-size:10px
+  }
+  .back-top {
+    width:100%;
+    margin-left:0;
+    margin-top:5px
+  }
+  .site-footer nav {
+    font-size:10px;
+    gap:12px 20px;
+    margin-top:25px
+  }
+  .footer-bottom {
+    font-size:9px
+  }
+  .policy h1 {
+    font-size:26px
+  }
+  .policy h2 {
+    font-size:21px
+  }
+}
+
+/* 【動きを減らす設定】端末でアニメーションを減らしている人には即時移動。
+   新しく動きを追加する時もこの条件を尊重。自動スライダー等は現状ありません。 */
+@media(prefers-reduced-motion:reduce) {
+  html {
+    scroll-behavior:auto
+  }
+  *,*:before,*:after {
+    transition:none!important;
+    animation:none!important
+  }
+}
+
+/* 【正式ロゴ】ユーザー確認済みのクマを共通ヘッダーとフッターに使用。
+   文字はブランド名の補足。ロゴの形をCSSで描き直さず、元のPNGを参照します。 */
+.brand-link {
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  flex-shrink:0;
+  line-height:1.2
+}
+.brand-link img {
+  width:60px;
+  height:61px;
+  object-fit:contain
+}
+.brand-link>span {
+  font-size:18px;
+  font-weight:700;
+  letter-spacing:-.03em
+}
+.brand-link:hover {
+  text-decoration:none
+}
+@media(max-width:700px) {
+  .brand-link img {
+    width:45px;
+    height:46px
+  }
+  .brand-link>span {
+    font-size:16px
+  }
+  .brand-link {
+    gap:9px
+  }
+}

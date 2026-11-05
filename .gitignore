@@ -1,0 +1,13 @@
+# 公開ソースに、ローカル検証結果・巨大な元素材・認証情報を混ぜない。
+node_modules/
+.env
+.env.*
+!.env.example
+*.log
+*.zip
+contact-sheet.jpg
+asset-preview.jpg
+logo-reference.png
+qa/
+.DS_Store
+Thumbs.db
