@@ -3,112 +3,217 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- 【検索表示】titleは検索結果とブラウザーのタブ、descriptionはページの紹介。
-       ブランド説明を確定したら両方を更新。未確定の住所や実績は書かない。 -->
-  <title>The TEA｜北海道の、いつもの一杯。</title>
-  <meta name="description" content="北海道のローカルティースタンド、The TEA。北海道のみなさんのそばで、気軽に寄れる、あたたかなお茶の時間を。制作中のサンプルサイトです。">
+  <!-- 【検索表示】titleはタブと検索結果、descriptionはページの紹介。
+       コピー確定時に両方を更新。サンプルが残る間はnoindexを維持する。
+       正式URLを決める時も、別ブランドTLHの情報を流用しない。 -->
+  <title>The TEA｜この街に、余韻のある一杯を。</title>
+  <meta name="description" content="北海道のローカルティースタンド、The TEA。日常のすぐそばに、こだわりのお茶と、少しだけ特別な時間を。制作中のサンプルサイトです。">
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#F7F2EA">
-  <!-- 公開前：正式URL確定後にcanonicalとOGPを追加し、noindexを見直す。TLHのURLは使わない。 -->
   <link rel="icon" type="image/png" href="assets/the-tea-logo.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <a class="skip-link" href="#main">本文へ移動</a>
-  <div class="preview-note">制作中のサンプルサイトです。メニュー・店舗・お知らせにはダミー情報を含みます。</div>
-  <!-- 【ヘッダー／道案内】navはページ内の目次。href="#menu"はid="menu"への移動。
-       カテゴリー名を変える時は見出しも一緒に。id変更はリンク切れになるので両方を直す。
-       スマホでは折り返す設計。メニューを隠すJavaScriptは不要。 -->
+  <div class="preview-note">制作中のサンプルサイトです。メニュー・店舗情報にはダミーを含みます。</div>
+
+  <!-- 【ヘッダー】navは目次、hrefの#と本文のidが移動先の組み合わせ。
+       カテゴリー追加時は本文とフッターにも追加。idは重複させない。
+       クマは正式ロゴ。隣の文字はブランド名の補足で、別のロゴではない。 -->
   <header class="site-header wrap">
-    <a class="brand-link" href="#home" aria-label="The TEA トップページへ"><img src="assets/the-tea-logo.png" alt="" width="471" height="480"><span>The TEA</span></a>
+    <a class="brand-link" href="#home" aria-label="The TEA トップページへ">
+      <img src="assets/the-tea-logo.png" alt="" width="471" height="480">
+      <span>The TEA<small>LOCAL TEA STAND · HOKKAIDO</small></span>
+    </a>
     <nav aria-label="メインナビゲーション">
-      <a href="#about">The TEAについて</a>
+      <a href="#about">私たちについて</a>
+      <a href="#craft">一杯へのこだわり</a>
       <a href="#menu">メニュー</a>
       <a href="#shops">店舗</a>
       <a href="#news">お知らせ</a>
     </nav>
-    <a class="header-instagram" href="https://www.instagram.com/the.tea_cocono/" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブで開きます）</span></a>
+    <a class="header-instagram" href="https://www.instagram.com/the.tea_cocono/" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a>
   </header>
+
   <main id="main">
-    <!-- 【ファーストビュー】h1はこのページの主題。見出し・短い紹介・写真でお店を伝える。
-         キャッチコピーを変更する場所。改行が増えると高さが変わるのでスマホでも確認。
-         写真は元データを編集せずWeb用コピーを使用。altは写真を見られない人への説明。 -->
+    <!-- 【トップ】h1はページ全体の主題。細い字と余白で、静かな上質さを表す。
+         文字を長くする時はスマホの改行も確認。既存のNoto Sans JPを継続使用。
+         写真未確定の枠はfigure。壊れたimgや架空の写真を表示しない。 -->
     <section class="hero wrap" id="home" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="tiny-dot" aria-hidden="true"></span> YOUR LOCAL TEA STAND, HOKKAIDO.</p>
-        <h1 id="hero-title">北海道の、<br>いつもの一杯<span class="period">。</span></h1>
-        <p class="hero-description">ふらっと寄れて、ほっとできる。<br>北海道のみなさんのそばにある、<br>ローカルティースタンドです。</p>
-        <a class="button" href="#menu">今日のお茶をのぞいてみる <span aria-hidden="true">↗</span></a>
-        <div class="hero-bottom"><span>いつもの街に、お茶の時間。</span><a href="#about" aria-label="The TEAについて読む">SCROLL <span aria-hidden="true">↓</span></a></div>
+        <p class="eyebrow">ROOTED IN HOKKAIDO.</p>
+        <h1 id="hero-title">この街に、<br>余韻のある<br>一杯を。</h1>
+        <p class="hero-description">日常のすぐそばに、<br>こだわりのお茶と、少しだけ特別な時間を。</p>
+        <div class="hero-links">
+          <a class="button" href="#menu">お茶を選ぶ <span aria-hidden="true">↗</span></a>
+          <a class="quiet-link" href="#about">The TEAについて</a>
+        </div>
+        <p class="hero-origin">北海道のローカルティースタンド <span>The TEA</span></p>
       </div>
+      <!-- 【画像枠・HERO】ここは後で写真に差し替える場所。
+           .image-placeholderの中身をimgに置換し、画像の説明をaltに書く。
+           写真は縦寄り、自然光、主役の一杯と余白。比率・手順はREADME参照。 -->
       <figure class="hero-visual">
-        <img class="hero-photo" src="assets/hero-tea.webp" alt="クマのイラストが描かれたThe TEAのカップ。氷の入ったドリンク" width="1600" height="1067" fetchpriority="high">
-        <span class="photo-note">A LITTLE TEA, A LITTLE HAPPINESS.</span>
-        <div class="local-stamp"><span>あなたの街の</span><strong>お茶やさん。</strong><span>HELLO, HOKKAIDO!</span></div>
+        <div class="image-placeholder hero-image">
+          <span class="image-index" aria-hidden="true">01 / THE CUP</span>
+          <div><span class="placeholder-kicker">IMAGE TO COME</span><p>ここに、光と余白を生かした<br>一杯のお茶の画像</p></div>
+          <span class="image-direction">自然光 / 縦構図 / 静かな背景</span>
+        </div>
+        <figcaption><span>A MOMENT, WELL SPENT.</span><span>THE TEA / HOKKAIDO</span></figcaption>
       </figure>
     </section>
-    <div class="ribbon" aria-hidden="true"><span>TEA TIME, LOCAL TIME.</span><span>お茶でつながる、いつもの毎日。</span><span>TEA TIME, LOCAL TIME.</span></div>
 
-    <!-- 【ブランド紹介】sectionは話題ごとのまとまり。idは目次の行き先。
-         ローカル・親しみ・暖かさを伝える場所。文章は現時点の提案コピー。
-         理念を確定したら本文を差し替える。TLHの沿革・肩書き・活動は流用しない。 -->
+    <!-- 【ブランド紹介】sectionは一つの話題をまとめるHTML。
+         確認済みなのは北海道のローカルティースタンドという基本情報。
+         以下は提案コピー。歴史・受賞・産地などの実績を推測で足さない。 -->
     <section class="about section wrap" id="about" aria-labelledby="about-title">
-      <div class="section-label"><span>01 / ABOUT US</span><span>The TEAについて</span></div>
+      <div class="section-label"><span>01 — OUR PHILOSOPHY</span><span>私たちについて</span></div>
       <div class="about-layout">
-        <div class="about-art"><img src="assets/the-tea-logo.png" alt="The TEAのクマのロゴ" width="471" height="480" loading="lazy"><span>はじめましても、いつもどうも。</span></div>
-        <div class="about-copy"><h2 id="about-title">おいしいお茶を、<br>もっと近くに。</h2><p>特別な日だけでなく、いつもの日にも。<br>学校や仕事の帰り道、誰かとの待ち合わせ。</p><p>北海道で暮らすみなさんの、<br>気軽に立ち寄れる場所でありたい。</p><p>一杯のお茶をきっかけに、<br>この街との距離が、ちょっと近くなる。<br>そんなお店を、ここ北海道で。</p><span class="small-note">※ 紹介文は初期デザイン用の仮コピーです。</span></div>
+        <h2 id="about-title">土地に根ざし、<br>一杯を深める。</h2>
+        <div class="about-copy">
+          <p class="lead">気軽に立ち寄れる、いつもの場所で。<br>少しだけ、特別なお茶の時間を。</p>
+          <p>北海道のみなさんとの近さを、大切に。<br>そして、お茶の一杯一杯にも、こだわりを。</p>
+          <p>親しみのある日常と、心に残る余韻。<br>そのどちらもあるティースタンドでありたいと、<br>私たちは考えています。</p>
+          <p class="small-note">紹介文は、ブランドの方向性を示す仮コピーです。</p>
+        </div>
       </div>
     </section>
 
-    <!-- 【メニュー】articleは単独でも意味を持つ商品紹介。増やす時はarticleを複製。
-         商品名・説明・価格・写真・altをセットで変更。価格未確定のまま数値を入れない。
-         allergen情報を載せる場合は実データ確認必須。写真だけで原材料を判断しない。 -->
+    <!-- 【こだわり】新しい説明カテゴリー。dlは項目名と説明を対応させる。
+         実情報が揃ったらddと準備中注記を差し替える。栽培・抽出・手作りなどを
+         未確認のまま断言しない。写真の枠は実際の茶葉・器具を撮影して埋める。 -->
+    <section class="craft section wrap" id="craft" aria-labelledby="craft-title">
+      <div class="section-label"><span>02 — THE DETAILS</span><span>一杯へのこだわり</span></div>
+      <div class="craft-layout">
+        <figure class="craft-visual">
+          <div class="image-placeholder craft-image">
+            <span class="image-index" aria-hidden="true">02 / THE LEAVES</span>
+            <div><span class="placeholder-kicker">IMAGE TO COME</span><p>ここに、茶葉と<br>お茶を淹れる手元の画像</p></div>
+            <span class="image-direction">実際の茶葉 / 手元 / 素材の質感</span>
+          </div>
+          <figcaption>一杯の向こうにある、小さな積み重ね。</figcaption>
+        </figure>
+        <div class="craft-copy">
+          <p class="eyebrow">A CLOSER LOOK AT OUR TEA.</p>
+          <h2 id="craft-title">茶葉を知る。<br>一杯に向き合う。</h2>
+          <p>茶葉の選び方、素材との組み合わせ、仕立てのこと。<br>その一杯にある理由を、丁寧にお伝えしていきます。</p>
+          <dl class="craft-details">
+            <div><dt><span>01</span> 茶葉</dt><dd>ここに、茶葉の産地や選び方の説明が入ります。</dd></div>
+            <div><dt><span>02</span> 仕立て</dt><dd>ここに、お茶の淹れ方や味づくりの説明が入ります。</dd></div>
+            <div><dt><span>03</span> 素材</dt><dd>ここに、お茶に合わせる素材の説明が入ります。</dd></div>
+          </dl>
+          <p class="small-note">こだわりの具体的な説明は準備中です。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 【商品紹介】articleが一商品。追加はarticle単位で複製する。
+         商品名、写真、alt、価格、成分はセットで照合。現在は仮カテゴリー。
+         既存写真はWeb用コピー。抹茶は統一した商品写真が揃うまで画像枠を表示。 -->
     <section class="menu-section section" id="menu" aria-labelledby="menu-title">
-      <div class="wrap"><div class="section-label"><span>02 / OUR TEA</span><span>メニュー</span></div>
-        <div class="section-heading"><div><p class="eyebrow">WHAT'S YOUR TEA TODAY?</p><h2 id="menu-title">今日は、どんな気分？</h2></div><p>すっきりも、まろやかも。<br>あなたの「いつもの」を見つけて。</p></div>
+      <div class="wrap">
+        <div class="section-label"><span>03 — TEA SELECTION</span><span>メニュー</span></div>
+        <div class="section-heading">
+          <div><p class="eyebrow">FIND YOUR EVERYDAY FAVORITE.</p><h2 id="menu-title">一杯の、選び方。</h2></div>
+          <p>すっきりと、あるいは、まろやかに。<br>今日の気分に寄り添うお茶を。</p>
+        </div>
         <div class="menu-grid">
-          <article class="menu-item"><div class="menu-image"><span class="item-number">01</span><img src="assets/tea.webp" alt="The TEAの透明カップに入った琥珀色のドリンク。サンプル掲載写真" width="900" height="1600" loading="lazy"></div><div class="menu-title"><h3>ティー</h3><span>TEA</span></div><p>お茶の香りを紹介するテスト文です。</p><div class="menu-meta"><span class="sample-tag">サンプルメニュー</span><span>価格は準備中</span></div></article>
-          <article class="menu-item"><div class="menu-image"><span class="item-number">02</span><img src="assets/milk-tea.webp" alt="The TEAのカップに入ったミルク色のドリンク。サンプル掲載写真" width="1600" height="900" loading="lazy"></div><div class="menu-title"><h3>ミルクティー</h3><span>MILK TEA</span></div><p>まろやかな一杯を紹介するテスト文です。</p><div class="menu-meta"><span class="sample-tag">サンプルメニュー</span><span>価格は準備中</span></div></article>
-          <article class="menu-item"><div class="menu-image"><span class="item-number">03</span><img src="assets/matcha.webp" alt="緑とミルク色の層があるThe TEAのドリンク。サンプル掲載写真" width="1600" height="900" loading="lazy"></div><div class="menu-title"><h3>抹茶</h3><span>MATCHA</span></div><p>緑のお茶を紹介するテスト文です。</p><div class="menu-meta"><span class="sample-tag">サンプルメニュー</span><span>価格は準備中</span></div></article>
-        </div><p class="section-footnote">商品名・説明は仮置きです。写真の商品と一致しない場合があります。販売中のメニュー・価格はInstagramでご確認ください。</p>
+          <article class="menu-item">
+            <div class="menu-image"><img src="assets/tea.webp" alt="クマのカップに入った琥珀色のお茶。サンプル掲載写真" width="1000" height="1000" loading="lazy"></div>
+            <div class="menu-title"><span class="menu-english">TEA</span><span class="item-number">01</span><h3>ティー</h3></div>
+            <p>香りと余韻を楽しむ一杯を紹介する、仮の説明文です。</p>
+            <div class="menu-meta"><span>サンプルメニュー</span><span>価格は準備中</span></div>
+          </article>
+          <article class="menu-item">
+            <div class="menu-image"><img src="assets/milk-tea.webp" alt="クマのカップに入ったミルクティー。サンプル掲載写真" width="1000" height="1000" loading="lazy"></div>
+            <div class="menu-title"><span class="menu-english">MILK TEA</span><span class="item-number">02</span><h3>ミルクティー</h3></div>
+            <p>お茶とミルクの重なりを紹介する、仮の説明文です。</p>
+            <div class="menu-meta"><span>サンプルメニュー</span><span>価格は準備中</span></div>
+          </article>
+          <article class="menu-item">
+            <div class="image-placeholder menu-image">
+              <div><span class="placeholder-kicker">IMAGE TO COME</span><p>ここに、背景を揃えた<br>抹茶の商品画像</p></div>
+            </div>
+            <div class="menu-title"><span class="menu-english">MATCHA</span><span class="item-number">03</span><h3>抹茶</h3></div>
+            <p>緑のお茶の味わいを紹介する、仮の説明文です。</p>
+            <div class="menu-meta"><span>サンプルメニュー</span><span>価格は準備中</span></div>
+          </article>
+        </div>
+        <div class="menu-end"><p class="section-footnote">商品名・説明は仮置きです。販売中のメニュー・価格はInstagramでご確認ください。</p><a class="text-link" href="https://www.instagram.com/the.tea_cocono/" target="_blank" rel="noopener noreferrer">Instagramで最新情報を見る <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a></div>
       </div>
     </section>
 
-    <!-- 【地域とのつながり】活動紹介を後から追加できるカテゴリー。
-         現在は空の掲載枠。イベント実施・協賛などを事実として作り出さない。
-         実際のお知らせを得たら日付と内容を確認し、サンプル表示を外す。 -->
+    <!-- 【地域】ローカルというブランドの核を示すカテゴリー。
+         実施済みの地域活動は未確認なので、実績ではなく今後の掲載枠として表示。
+         確認済みの活動を得たらcoming-soonを置き換え、関連するお知らせも更新。 -->
     <section class="community section wrap" id="community" aria-labelledby="community-title">
-      <div class="section-label"><span>03 / HELLO, NEIGHBORS</span><span>地域とつながる</span></div>
-      <div class="community-layout"><h2 id="community-title">お茶の向こうに、<br>街のつながり。</h2><div><p>北海道のみなさんと、もっと近くに。<br>地域のイベントや、お店の日常をお届けする場所です。</p><div class="coming-soon"><span class="sample-tag">掲載サンプル</span><h3>街のイベント・コラボのお話</h3><p>ここに地域での活動を紹介します。<br>現在、掲載内容を準備しています。</p></div></div></div>
-    </section>
-
-    <!-- 【店舗・アクセス】dlは項目名と値を対応させるHTML。
-         実店舗の住所、営業時間、休業日を確認してから入れる。今は全て未確定。
-         地図を追加する時は実住所に対応するURLにし、架空の地図リンクは作らない。 -->
-    <section class="shops-section section" id="shops" aria-labelledby="shops-title"><div class="wrap">
-      <div class="section-label"><span>04 / FIND US</span><span>店舗・アクセス</span></div>
-      <div class="shops-layout"><div><p class="eyebrow">SEE YOU AROUND.</p><h2 id="shops-title">いつもの街で、<br>待っています。</h2><p>お近くのお店で、ほっとひと息。<br>最新の営業情報はInstagramから。</p><a class="text-link" href="https://www.instagram.com/the.tea_cocono/" target="_blank" rel="noopener noreferrer">Instagramで店舗情報を見る <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブで開きます）</span></a></div>
-        <article class="shop-card"><span class="sample-tag">店舗情報・ダミー枠</span><h3>The TEA <span>店舗名を掲載予定</span></h3><dl><div><dt>住所</dt><dd>正式な住所を掲載予定</dd></div><div><dt>営業時間</dt><dd>営業時間を掲載予定</dd></div><div><dt>定休日</dt><dd>定休日を掲載予定</dd></div><div><dt>アクセス</dt><dd>最寄り駅・道順を掲載予定</dd></div></dl><p class="small-note">この枠はテスト用です。来店時はInstagramをご確認ください。</p></article>
+      <div class="section-label"><span>04 — OUR NEIGHBORHOOD</span><span>地域とつながる</span></div>
+      <div class="community-layout">
+        <div><p class="eyebrow">CLOSE TO TEA. CLOSE TO YOU.</p><h2 id="community-title">この街のそばに。<br>あなたの日常のそばに。</h2></div>
+        <div class="community-copy"><p>「いつもの一杯」を通して、<br>北海道のみなさんと、少しずつつながっていく。</p><p>お茶のことだけでなく、この街のことも。<br>The TEAの日常を、ここからお届けしていきます。</p><div class="coming-soon"><span class="eyebrow">LOCAL JOURNAL / 準備中</span><p>ここに、地域のイベントやコラボのお話が入ります。</p></div></div>
       </div>
-    </div></section>
-
-    <!-- 【お知らせ】details/summaryで本文を開閉。JavaScriptなしでキーボードでも操作可能。
-         記事追加はdetailsを複製。日付未確定時は架空の日付をtimeに入れない。
-         実際の記事に変更する時は「サンプル」を外し、必要なら正しいtimeを追加する。 -->
-    <section class="news section wrap" id="news" aria-labelledby="news-title"><div class="section-label"><span>05 / NEWS & JOURNAL</span><span>お知らせ</span></div>
-      <div class="section-heading"><h2 id="news-title">The TEAだより。</h2><a class="text-link" href="https://www.instagram.com/the.tea_cocono/" target="_blank" rel="noopener noreferrer">最新情報はInstagramへ <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブで開きます）</span></a></div>
-      <div class="news-list"><details><summary><span class="news-category">お店のこと</span><span>営業のお知らせが入ります <span class="inline-sample">SAMPLE</span></span><span class="expand-mark" aria-hidden="true">＋</span></summary><p>営業時間の変更や休業日などを掲載するためのテスト文です。実際の営業案内ではありません。</p></details><details><summary><span class="news-category">メニュー</span><span>新しい一杯のお話が入ります <span class="inline-sample">SAMPLE</span></span><span class="expand-mark" aria-hidden="true">＋</span></summary><p>新商品の紹介文を掲載するサンプルです。商品名・発売日・価格を確認した後に差し替えてください。</p></details><details><summary><span class="news-category">街のこと</span><span>地域のお知らせが入ります <span class="inline-sample">SAMPLE</span></span><span class="expand-mark" aria-hidden="true">＋</span></summary><p>地域のイベントやコラボレーションを掲載するサンプルです。参加予定や実績を示すものではありません。</p></details></div>
     </section>
 
-    <!-- 【FAQ】summaryが質問、直後のpが回答。質問を追加する時はdetails単位で複製。
-         アレルギー対応、支払い、予約などは運用確認後に回答を確定。推測で断言しない。 -->
-    <section class="faq section wrap" id="faq" aria-labelledby="faq-title"><div class="section-label"><span>06 / GOOD TO KNOW</span><span>よくあるご質問</span></div><div class="faq-layout"><h2 id="faq-title">来る前の、<br>ちょっとしたこと。</h2><div class="faq-list"><details><summary>メニューや価格はどこで見られますか？<span aria-hidden="true">＋</span></summary><p>このサイトのメニューはサンプルです。販売中の商品・価格はInstagramでご確認ください。</p></details><details><summary>アレルギー情報を知りたいです。<span aria-hidden="true">＋</span></summary><p>回答欄のテスト文です。原材料・アレルギー表示と、店舗での案内方法を確認して掲載します。ご注文前に店舗へご確認ください。</p></details><details><summary>テイクアウトや支払い方法は？<span aria-hidden="true">＋</span></summary><p>回答欄のテスト文です。利用できるサービスや決済手段を確認してから掲載します。</p></details></div></div></section>
+    <!-- 【店舗】写真と営業情報を並べる。正式な住所は未確認なので掲載しない。
+         shop-imageは実店舗の写真に置換する枠。写真だけで店舗名・所在地を推測しない。
+         dlのdtが項目名、ddが内容。地図は実住所とURLを確認後に追加する。 -->
+    <section class="shops-section section wrap" id="shops" aria-labelledby="shops-title">
+      <div class="section-label"><span>05 — VISIT US</span><span>店舗・アクセス</span></div>
+      <div class="shops-layout">
+        <figure class="shop-visual">
+          <div class="image-placeholder shop-image">
+            <span class="image-index" aria-hidden="true">03 / THE PLACE</span>
+            <div><span class="placeholder-kicker">IMAGE TO COME</span><p>ここに、北海道のお店と<br>カウンターの空気感が伝わる画像</p></div>
+            <span class="image-direction">実店舗 / 店先やカウンター / 自然な光</span>
+          </div>
+          <figcaption>この街で、お茶の時間を。</figcaption>
+        </figure>
+        <div class="shop-copy"><p class="eyebrow">A PLACE IN YOUR EVERYDAY.</p><h2 id="shops-title">いつもの街で、<br>お待ちしています。</h2><p>お近くのお店で、ほっとひと息。<br>最新の営業情報はInstagramから。</p>
+          <article class="shop-card"><p class="small-note">店舗情報・ダミー枠</p><h3>The TEA <span>店舗名を掲載予定</span></h3><dl><div><dt>住所</dt><dd>正式な住所を掲載予定</dd></div><div><dt>営業時間</dt><dd>営業時間を掲載予定</dd></div><div><dt>定休日</dt><dd>定休日を掲載予定</dd></div><div><dt>アクセス</dt><dd>最寄り駅・道順を掲載予定</dd></div></dl></article>
+          <a class="text-link" href="https://www.instagram.com/the.tea_cocono/" target="_blank" rel="noopener noreferrer">Instagramで店舗情報を見る <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a>
+        </div>
+      </div>
+    </section>
 
-    <!-- 【お問い合わせ】実際に届く連絡先がない間は送信フォームを作らない。
-         ユーザー提供のInstagramへ案内。メールを追加する時は公開用アドレスを確認。
-         顧客の入力や保存は行わず、送信完了を装うボタンも置かない。 -->
-    <section class="contact section" id="contact" aria-labelledby="contact-title"><div class="wrap contact-layout"><div><p class="eyebrow">LET'S KEEP IN TOUCH.</p><h2 id="contact-title">お茶の時間の、その先も。</h2><p>お店の日常や、新しい一杯のお話。<br>Instagramでも、気軽につながってください。</p></div><a class="instagram-card" href="https://www.instagram.com/the.tea_cocono/" target="_blank" rel="noopener noreferrer"><span>INSTAGRAM / お問い合わせ</span><strong>@the.tea_cocono</strong><span>アカウントを見る <span aria-hidden="true">↗</span></span><span class="sr-only">（新しいタブで開きます）</span></a></div></section>
+    <!-- 【お知らせ】details/summaryはブラウザー標準の開閉機能。
+         文字と細い罫線で一覧を整理。記事はdetails単位で追加する。
+         日付未確認なので架空の日付は入れない。SAMPLEは実記事の確認後に外す。 -->
+    <section class="news section wrap" id="news" aria-labelledby="news-title">
+      <div class="section-label"><span>06 — JOURNAL</span><span>お知らせ</span></div>
+      <div class="section-heading"><h2 id="news-title">The TEAからのお便り。</h2><a class="text-link" href="https://www.instagram.com/the.tea_cocono/" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a></div>
+      <div class="news-list">
+        <details><summary><span class="news-category">お店のこと</span><span>営業のお知らせが入ります <span class="inline-sample">SAMPLE</span></span><span class="expand-mark" aria-hidden="true">＋</span></summary><p>営業時間の変更や休業日などを掲載するためのテスト文です。実際の営業案内ではありません。</p></details>
+        <details><summary><span class="news-category">メニュー</span><span>新しい一杯のお話が入ります <span class="inline-sample">SAMPLE</span></span><span class="expand-mark" aria-hidden="true">＋</span></summary><p>新商品の紹介文を掲載するサンプルです。商品名・発売日・価格を確認した後に差し替えてください。</p></details>
+        <details><summary><span class="news-category">街のこと</span><span>地域のお知らせが入ります <span class="inline-sample">SAMPLE</span></span><span class="expand-mark" aria-hidden="true">＋</span></summary><p>地域のイベントやコラボレーションを掲載するサンプルです。参加予定や実績を示すものではありません。</p></details>
+      </div>
+    </section>
+
+    <!-- 【FAQ】質問はsummary、回答は直後のp。キーボードでも開閉できる。
+         回答を確定する時は店舗運用を確認。アレルギー対応や決済手段を推測しない。
+         ページ全体の文字を小さくせず、操作面は十分な高さを確保する。 -->
+    <section class="faq section wrap" id="faq" aria-labelledby="faq-title">
+      <div class="section-label"><span>07 — BEFORE YOUR VISIT</span><span>よくあるご質問</span></div>
+      <div class="faq-layout"><h2 id="faq-title">お越しになる前に。</h2><div class="faq-list">
+        <details><summary>メニューや価格はどこで見られますか？<span aria-hidden="true">＋</span></summary><p>このサイトのメニューはサンプルです。販売中の商品・価格はInstagramでご確認ください。</p></details>
+        <details><summary>アレルギー情報を知りたいです。<span aria-hidden="true">＋</span></summary><p>回答欄のテスト文です。原材料・アレルギー表示と店舗の案内方法を確認して掲載します。ご注文前に店舗へご確認ください。</p></details>
+        <details><summary>テイクアウトや支払い方法は？<span aria-hidden="true">＋</span></summary><p>回答欄のテスト文です。利用できるサービスや決済手段を確認してから掲載します。</p></details>
+      </div></div>
+    </section>
+
+    <!-- 【連絡先】実際に届くユーザー提供のInstagramを案内。
+         個人情報を集めるフォームは置かず、架空の送信完了も作らない。
+         公開用メールを追加する場合は、確定した窓口とポリシーを一緒に更新。 -->
+    <section class="contact section" id="contact" aria-labelledby="contact-title">
+      <div class="wrap contact-layout"><div><p class="eyebrow">KEEP IN TOUCH.</p><h2 id="contact-title">一杯から、つながっていく。</h2><p>お店の日常や、新しいお茶のお話。<br>Instagramでも、気軽につながってください。</p></div>
+        <a class="instagram-card" href="https://www.instagram.com/the.tea_cocono/" target="_blank" rel="noopener noreferrer"><span>INSTAGRAM / お問い合わせ</span><strong>@the.tea_cocono</strong><span>アカウントを見る <span aria-hidden="true">↗</span></span><span class="sr-only">（新しいタブ）</span></a>
+      </div>
+    </section>
   </main>
-  <footer class="site-footer wrap"><div class="footer-top"><a class="brand-link" href="#home" aria-label="The TEA トップページへ"><img src="assets/the-tea-logo.png" alt="" width="471" height="480"><span>The TEA</span></a><p>北海道の、いつもの一杯。</p><a class="back-top" href="#home">ページの先頭へ ↑</a></div><nav aria-label="フッターナビゲーション"><a href="#about">The TEAについて</a><a href="#menu">メニュー</a><a href="#community">地域とつながる</a><a href="#shops">店舗・アクセス</a><a href="#news">お知らせ</a><a href="#faq">よくあるご質問</a><a href="#contact">お問い合わせ</a><a href="privacy.html">プライバシーポリシー</a></nav><div class="footer-bottom"><small>© The TEA</small><small>制作中・サンプルを含みます</small></div></footer>
+
+  <footer class="site-footer wrap">
+    <div class="footer-top"><a class="brand-link" href="#home" aria-label="The TEA トップページへ"><img src="assets/the-tea-logo.png" alt="" width="471" height="480"><span>The TEA<small>LOCAL TEA STAND · HOKKAIDO</small></span></a><p>北海道の、いつもの一杯。</p><a class="back-top" href="#home">ページの先頭へ ↑</a></div>
+    <nav aria-label="フッターナビゲーション"><a href="#about">私たちについて</a><a href="#craft">一杯へのこだわり</a><a href="#menu">メニュー</a><a href="#community">地域とつながる</a><a href="#shops">店舗・アクセス</a><a href="#news">お知らせ</a><a href="#faq">よくあるご質問</a><a href="#contact">お問い合わせ</a><a href="privacy.html">プライバシーポリシー</a></nav>
+    <div class="footer-bottom"><small>© The TEA</small><small>制作中・サンプルを含みます</small></div>
+  </footer>
 </body>
 </html>

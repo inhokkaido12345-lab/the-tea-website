@@ -1,1126 +1,382 @@
-/* 【CSSの読み方】HTMLが内容、CSSが見た目。このファイルだけで全ページを装飾します。
-   初めての変更は下の色変数から。セレクター名はHTMLのclassと対応します。
-   レイアウトを変えたら横幅390pxと1280pxの両方で確認。詳しい入口はREADMEの魔改造MAP。 */
+/* 【CSSの入口】HTMLは内容と意味、CSSは見た目を担当する。
+   変更の入口は下の共通変数。レイアウトはセクションごと、スマホ調整は末尾。
+   静かな上質さは余白・細い罫線・文字の強弱で作り、情報の小ささで表現しない。
+   修正後は320pxの小さな画面とPCの両方で確認。詳しい手順はREADMEの魔改造MAP。 */
 @font-face {
-  font-family:"Noto Sans JP";
-  src:url("assets/noto-sans-jp.ttf") format("truetype");
-  font-style:normal;
-  font-weight:100 900;
-  font-display:swap
+  font-family: "Noto Sans JP";
+  src: url("assets/noto-sans-jp.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
 }
+
 :root {
-
-  /* 【ブランドパレット】提供画像の10色をそのまま保存。
-     配色の役割はCLASSIC MENU / QUICK MENUに合わせる。生成りの地に茶色の文字、
-     グレージュは小さな見出し帯、ベージュは選択・強調。大きな色面で区切らない。
-     青=ICE、赤=HOTという意味を保つため、このサイトでは汎用の装飾背景に使わない。
-     オレンジや緑は大きな見出し用。小さい本文は茶色、強調リンクは赤茶を使う。 */
-  --sand:#D9B68B;
-  --cream:#F7F2EA;
-  --stone:#D8CEC2;
-  --taupe:#8A7461;
-  --brown:#362318;
-  --terracotta:#BC5529;
-  --rust:#8C2804;
-  --blue:#AECFF2;
-  --rose:#B85A4F;
-  --sage:#72807A;
-  --bg:var(--cream);
-  --ink:var(--brown);
-  --accent:var(--rust);
-  --line:var(--stone);
-  --font:"Noto Sans JP",sans-serif;
-  --radius:3px;
+  /* 【色の役割】CLASSIC MENU / QUICK MENUの指定色を維持。
+     生成りの地と茶色の文字が基本。石色は罫線・画像枠、ベージュは小さな強調。
+     オレンジ・赤茶・緑は必要な場面だけ。青=ICE、赤=HOTを汎用背景に流用しない。
+     補助色を小さい本文に使うと読みにくいので、本文と画像枠の案内は茶色を使用。 */
+  --sand: #D9B68B;
+  --cream: #F7F2EA;
+  --stone: #D8CEC2;
+  --taupe: #8A7461;
+  --brown: #362318;
+  --terracotta: #BC5529;
+  --rust: #8C2804;
+  --blue: #AECFF2;
+  --rose: #B85A4F;
+  --sage: #72807A;
+  --bg: var(--cream);
+  --ink: var(--brown);
+  --accent: var(--rust);
+  --line: var(--stone);
+  --font: "Noto Sans JP", sans-serif;
+  --content-width: 1280px;
+  --section-space: 112px;
 }
 
-/* 【土台】box-sizingで余白を幅に含める。画像は親要素より大きくしない。
-   本文の余白はwrapとsectionで統一。個別の幅を足す前に共通ルールを確認。 */
-* {
-  box-sizing:border-box
-}
-html {
-  scroll-behavior:smooth;
-  scroll-padding-top:24px
-}
-body {
-  margin:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:var(--font);
-  font-size:15px;
-  line-height:1.95;
-  -webkit-font-smoothing:antialiased
-}
-a {
-  color:inherit;
-  text-decoration:none
-}
-img {
-  max-width:100%;
-  height:auto;
-  display:block
-}
-h1,h2,h3,p,figure {
-  margin:0
-}
-h1,h2,h3 {
-  line-height:1.5
-}
-button,a,summary {
-  -webkit-tap-highlight-color:transparent
-}
-a:focus-visible,summary:focus-visible {
-  outline:3px solid var(--rust);
-  outline-offset:6px
-}
-a:hover {
-  text-decoration:underline;
-  text-underline-offset:6px
-}
-.wrap {
-  width:min(1240px,calc(100% - 96px));
-  margin-inline:auto
-}
-.section {
-  padding-block:104px
-}
-.eyebrow {
-  font-size:10px;
-  font-weight:650;
-  letter-spacing:.15em
-}
-.sr-only {
-  position:absolute;
-  width:1px;
-  height:1px;
-  padding:0;
-  margin:-1px;
-  overflow:hidden;
-  clip:rect(0,0,0,0);
-  white-space:nowrap;
-  border:0
-}
-.skip-link {
-  position:fixed;
-  z-index:10;
-  top:8px;
-  left:8px;
-  padding:8px 20px;
-  background:var(--brown);
-  color:var(--cream);
-  transform:translateY(-150%)
-}
-.skip-link:focus {
-  transform:translateY(0)
-}
-.preview-note {
-  background:var(--stone);
-  color:var(--brown);
-  text-align:center;
-  font-size:10px;
-  letter-spacing:.04em;
-  padding:7px 20px
-}
-.small-note,.section-footnote {
-  font-size:11px;
-  line-height:1.9
-}
-.small-note {
-  display:block;
-  margin-top:25px
-}
-.sample-tag {
-  display:inline-block;
-  font-size:10px;
-  letter-spacing:.03em;
-  border:1px solid currentColor;
-  border-radius:2px;
-  padding:2px 8px;
-  line-height:1.8
+/* 【基本】border-boxは余白を含めた幅の計算。wrapはページ共通の左右余白。
+   文章を大きく変える時は固定幅を増やさず、まず折り返しと行間を確認する。 */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 28px; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 14px; font-weight: 400; line-height: 2.15; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, p, figure { margin: 0; }
+h1, h2, h3 { font-weight: 400; }
+h1, h2 { text-wrap: balance; }
+a { color: inherit; text-decoration: none; text-underline-offset: 6px; }
+a:hover { text-decoration: underline; }
+img { display: block; max-width: 100%; height: auto; }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--rust); outline-offset: 6px; }
+a, summary { -webkit-tap-highlight-color: transparent; }
+.wrap { width: min(var(--content-width), calc(100% - 112px)); margin-inline: auto; }
+.section { padding-block: var(--section-space); }
+.eyebrow { font-size: 10px; line-height: 1.7; letter-spacing: .2em; font-weight: 500; }
+.small-note, .section-footnote { font-size: 11px; line-height: 1.9; }
+.small-note { margin-top: 26px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.skip-link { position: fixed; left: 12px; top: -100px; z-index: 10; padding: 8px 20px; background: var(--brown); color: var(--cream); }
+.skip-link:focus { top: 12px; }
+.preview-note { text-align: center; border-bottom: 1px solid var(--line); padding: 7px 20px; font-size: 10px; line-height: 1.8; letter-spacing: .03em; }
+
+/* 【共通ヘッダー】正式なクマロゴは画像、隣は文字の補足。
+   文字を軽く、サイズ差を控えめにして親しみと上質さを両立。ロゴ自体は加工しない。
+   メニューが増えたらスマホの折り返しも確認。開閉用JavaScriptは使わない。 */
+.site-header { min-height: 118px; display: flex; align-items: center; justify-content: space-between; gap: 26px; }
+.brand-link { display: inline-flex; align-items: center; gap: 13px; flex-shrink: 0; }
+.brand-link:hover { text-decoration: none; }
+.brand-link img { width: 45px; height: 46px; object-fit: contain; }
+.brand-link > span { font-size: 21px; line-height: 1.3; letter-spacing: .04em; font-weight: 500; }
+.brand-link small { display: block; font-size: 7px; letter-spacing: .13em; margin-top: 8px; font-weight: 400; }
+.site-header nav { display: flex; gap: 25px; font-size: 11px; }
+.header-instagram { display: inline-flex; gap: 20px; align-items: center; font-size: 11px; padding-block: 12px; }
+.header-instagram > span[aria-hidden] { font-size: 17px; }
+
+/* 【トップ】左右の非対称Gridと大きな余白で見出しと画像の主役を分ける。
+   h1は太くせず、行間・サイズで読みやすさを保つ。変更時は文字数を増やしすぎない。
+   ボタンは細い下線。丸いスタンプや強い塗り面は置かない。 */
+.hero { display: grid; grid-template-columns: .88fr 1.12fr; gap: 68px; align-items: stretch; padding-top: 23px; padding-bottom: 84px; }
+.hero-copy { display: flex; flex-direction: column; align-items: flex-start; padding-block: 38px 12px; }
+.hero h1 { margin-top: 33px; font-size: clamp(44px, 4.2vw, 65px); font-weight: 350; line-height: 1.6; letter-spacing: .055em; }
+.hero-description { margin-top: 25px; line-height: 2.3; font-size: 13px; }
+.hero-links { display: flex; align-items: center; gap: 29px; margin-top: 37px; }
+.button, .text-link { display: inline-flex; align-items: center; justify-content: space-between; gap: 38px; min-height: 44px; border-bottom: 1px solid var(--taupe); font-size: 12px; line-height: 1.7; padding-block: 10px; }
+.button { min-width: 145px; }
+.button > span[aria-hidden], .text-link > span[aria-hidden] { font-size: 19px; }
+.button:hover, .text-link:hover { color: var(--rust); text-decoration: none; border-color: var(--rust); }
+.quiet-link { font-size: 11px; padding-block: 13px; }
+.hero-origin { font-size: 10px; margin-top: auto; padding-top: 50px; }
+.hero-origin span { margin-left: 16px; letter-spacing: .04em; }
+.hero-visual { min-width: 0; }
+.hero-image { min-height: 650px; height: calc(100% - 34px); }
+figcaption { font-size: 9px; line-height: 1.8; letter-spacing: .08em; margin-top: 14px; }
+.hero-visual figcaption { display: flex; justify-content: space-between; gap: 15px; font-size: 8px; letter-spacing: .14em; }
+
+/* 【未確定写真の枠】表示される文章そのものが撮影・選定の指示になる。
+   疑似画像や架空の写真を作らず、必要な内容と縦横比だけを伝える。
+   写真が揃ったら内側をimgに差し替える。外側figureとfigcaptionは残す。
+   .hero-image / .craft-image / .shop-imageがimgにも使える寸法指定。 */
+.image-placeholder { position: relative; display: flex; align-items: center; justify-content: center; text-align: center; min-width: 0; padding: 72px 25px; border: 1px solid var(--stone); background: var(--cream); }
+.image-placeholder > div { max-width: 100%; }
+.image-placeholder p { font-size: 13px; line-height: 2.2; letter-spacing: .05em; }
+.placeholder-kicker { display: block; font-size: 9px; letter-spacing: .2em; line-height: 1.8; margin-bottom: 20px; }
+.placeholder-kicker::before { content: ""; display: block; width: 32px; height: 1px; margin: 0 auto 24px; background: var(--taupe); }
+.image-index, .image-direction { position: absolute; left: 24px; right: 24px; text-align: left; font-size: 9px; line-height: 1.8; }
+.image-index { top: 23px; letter-spacing: .15em; }
+.image-direction { bottom: 23px; letter-spacing: .05em; }
+img.hero-image, img.craft-image, img.shop-image { display: block; width: 100%; object-fit: cover; }
+
+/* 【各章の見出し】小さな日英ラベルと罫線を共通化。番号は飾りなので変更可。
+   余白を増やす時は--section-spaceで全体を調整。h2は本文ではなく章の見出し。
+   長い見出しを入れたら、スマホで自動改行が読みにくくならないか確認する。 */
+.section-label { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; border-top: 1px solid var(--line); padding-top: 19px; margin-bottom: 65px; font-size: 10px; line-height: 1.8; }
+.section-label > span:first-child { letter-spacing: .16em; }
+.section-label > span:last-child { letter-spacing: .06em; }
+h2 { font-size: clamp(30px, 3vw, 43px); line-height: 1.85; letter-spacing: .045em; font-weight: 350; }
+.section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 35px; margin-bottom: 44px; }
+.section-heading .eyebrow { margin-bottom: 17px; }
+.section-heading > p { font-size: 12px; line-height: 2.2; }
+.about { padding-top: 50px; }
+.about-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; max-width: 1060px; margin-inline: auto; }
+.about h2 { font-size: clamp(34px, 3.35vw, 48px); }
+.about-copy p { margin-top: 21px; font-size: 13px; line-height: 2.4; }
+.about-copy .lead { margin-top: 0; font-size: 16px; line-height: 2.3; }
+.about-copy .small-note { font-size: 10px; margin-top: 26px; }
+
+/* 【こだわり】写真と本文を互い違いに並べ、同じカードの反復を避ける。
+   説明文の追加はdlのdivを複製。dtが見出し、ddが具体的な説明。
+   白い余白を埋めるためだけに実績やストーリーを作らない。 */
+.craft-layout { display: grid; grid-template-columns: .95fr 1.05fr; gap: 100px; align-items: center; }
+.craft-image { aspect-ratio: 4 / 5; width: 100%; }
+.craft-copy h2 { margin-top: 24px; }
+.craft-copy > p:not(.eyebrow):not(.small-note) { margin-top: 25px; font-size: 13px; line-height: 2.3; }
+.craft-details { margin: 38px 0 0; }
+.craft-details > div { padding: 17px 0; border-top: 1px solid var(--line); }
+.craft-details dt { font-size: 13px; font-weight: 500; }
+.craft-details dt > span { font-size: 9px; letter-spacing: .1em; margin-right: 18px; }
+.craft-details dd { margin: 6px 0 0 38px; font-size: 11px; line-height: 1.9; }
+.craft-copy .small-note { font-size: 10px; }
+
+/* 【メニュー】3列Grid。写真を直線的な同じ比率に揃え、太い帯や丸い枠を省く。
+   グレージュは商品名の細い境界線、ベージュは必要な強調に限定して指定色を継承。
+   写真の原本は変更せず、Web用コピーだけを参照。商品追加はarticle単位で行う。 */
+.menu-section { background: var(--cream); }
+.menu-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+.menu-image { aspect-ratio: 1; width: 100%; overflow: hidden; }
+.menu-image img { width: 100%; height: 100%; object-fit: cover; }
+.menu-title { display: grid; grid-template-columns: 1fr auto; align-items: baseline; column-gap: 20px; margin-top: 23px; padding-top: 17px; border-top: 1px solid var(--stone); }
+.menu-english { font-size: 11px; letter-spacing: .16em; }
+.item-number { font-size: 9px; letter-spacing: .1em; }
+.menu-title h3 { grid-column: 1 / -1; margin-top: 10px; font-size: 21px; line-height: 1.6; letter-spacing: .03em; }
+.menu-item > p { font-size: 12px; margin-top: 14px; line-height: 2; }
+.menu-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 15px; font-size: 10px; margin-top: 23px; }
+.menu-end { display: flex; justify-content: space-between; align-items: center; gap: 35px; margin-top: 40px; }
+.menu-end .text-link { flex-shrink: 0; font-size: 11px; }
+.menu-image.image-placeholder { padding: 40px 20px; }
+.menu-image.image-placeholder p { font-size: 12px; }
+
+/* 【地域】画像や実績がない段階でも、文章の余白でローカルらしさを伝える。
+   準備枠は細い縦線だけ。実際の活動が届いたら本文を置き換える。 */
+.community-layout { display: grid; grid-template-columns: 1.1fr .9fr; gap: 90px; align-items: start; }
+.community h2 { margin-top: 23px; }
+.community-copy > p { margin-bottom: 22px; font-size: 13px; line-height: 2.3; }
+.coming-soon { border-left: 1px solid var(--taupe); padding-left: 24px; margin-top: 32px; }
+.coming-soon .eyebrow { font-size: 9px; }
+.coming-soon > p { font-size: 11px; margin-top: 9px; line-height: 2; }
+
+/* 【店舗】外観写真と営業案内を並べる。情報の区切りは背景色ではなく細い線。
+   小さな文字も茶色のまま維持。住所の確定まではダミー注記を消さない。 */
+.shops-layout { display: grid; grid-template-columns: 1.05fr .95fr; gap: 100px; align-items: center; }
+.shop-image { aspect-ratio: 5 / 6; width: 100%; }
+.shop-copy h2 { margin-top: 22px; }
+.shop-copy > p:not(.eyebrow) { font-size: 13px; margin-top: 22px; }
+.shop-card { margin-top: 32px; }
+.shop-card .small-note { margin-top: 0; font-size: 10px; }
+.shop-card h3 { font-size: 21px; margin-top: 12px; letter-spacing: .04em; }
+.shop-card h3 > span { font-size: 11px; font-weight: 400; margin-left: 15px; letter-spacing: 0; }
+.shop-card dl { margin: 20px 0 0; }
+.shop-card dl > div { display: grid; grid-template-columns: 78px 1fr; gap: 15px; border-top: 1px solid var(--line); padding: 13px 0; font-size: 12px; line-height: 1.9; }
+.shop-card dt { font-weight: 400; }
+.shop-card dd { margin: 0; }
+.shop-copy > .text-link { margin-top: 24px; font-size: 11px; }
+
+/* 【お知らせ・FAQ】ブラウザー標準のdetails/summaryで開閉する。
+   list-styleを消してもsummaryの操作機能は残る。最低64pxの高さで押しやすく。
+   開閉の見た目を変える時もキーボード操作とフォーカスの枠を消さない。 */
+details { border-bottom: 1px solid var(--line); }
+summary { display: flex; align-items: center; gap: 24px; min-height: 80px; padding-block: 21px; list-style: none; cursor: pointer; font-size: 13px; line-height: 1.9; }
+summary::-webkit-details-marker { display: none; }
+summary:hover, details[open] > summary { color: var(--rust); }
+details > p { font-size: 12px; line-height: 2; padding: 0 24px 25px; }
+.news-list, .faq-list { border-top: 1px solid var(--line); }
+.news-category { min-width: 100px; font-size: 10px; letter-spacing: .04em; }
+.inline-sample { display: inline-block; font-size: 8px; letter-spacing: .08em; margin-left: 18px; }
+.expand-mark { margin-left: auto; font-size: 18px; }
+details[open] .expand-mark { transform: rotate(45deg); }
+.faq-layout { display: grid; grid-template-columns: .85fr 1.15fr; gap: 80px; }
+.faq h2 { font-size: 30px; }
+.faq summary { justify-content: space-between; gap: 24px; }
+.faq summary > span { flex-shrink: 0; font-size: 18px; }
+.faq { padding-top: 50px; }
+
+/* 【連絡先・フッター】大きな濃色の面を作らず、余白と罫線でページを閉じる。
+   外部リンクは実際のInstagramへ。フォームやデータ保存は行わない。 */
+.contact { border-block: 1px solid var(--line); }
+.contact-layout { display: grid; grid-template-columns: 1.15fr .85fr; gap: 90px; align-items: center; }
+.contact h2 { font-size: 32px; margin-top: 24px; }
+.contact p:not(.eyebrow) { font-size: 13px; margin-top: 23px; }
+.instagram-card { display: flex; flex-direction: column; gap: 20px; padding-block: 22px; border-bottom: 1px solid var(--taupe); }
+.instagram-card:hover { text-decoration: none; border-color: var(--rust); }
+.instagram-card > span { font-size: 10px; letter-spacing: .08em; }
+.instagram-card strong { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.5; font-weight: 400; letter-spacing: .02em; overflow-wrap: anywhere; }
+.instagram-card > span:nth-of-type(2) { display: flex; justify-content: space-between; }
+.site-footer { padding-block: 55px 24px; }
+.footer-top { display: flex; align-items: center; gap: 45px; }
+.footer-top > p { font-size: 11px; }
+.back-top { margin-left: auto; font-size: 10px; padding-block: 12px; }
+.site-footer nav { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 40px; font-size: 10px; }
+.footer-bottom { display: flex; justify-content: space-between; gap: 15px; margin-top: 35px; padding-top: 22px; border-top: 1px solid var(--line); }
+.footer-bottom small { font-size: 9px; }
+.sample-tag { display: inline-block; padding: 2px 9px; border: 1px solid var(--stone); font-size: 10px; }
+
+/* 【別ページ】ポリシーも同じフォントと色を共有する。
+   見出しの大きさだけを用途に合わせる。共通CSS変更時はこのページも確認。 */
+.policy { max-width: 800px; min-height: 65vh; }
+.policy h1 { font-size: 34px; margin-top: 20px; font-weight: 400; }
+.policy h2 { font-size: 23px; margin-top: 40px; letter-spacing: 0; }
+.policy p, .policy ul { font-size: 14px; margin-top: 22px; }
+
+/* 【タブレット】共通の左右余白とGridの間隔を調整。
+   フォントを一律に小さくして収めず、必要なところで列を減らす。 */
+@media (max-width: 1100px) {
+  :root { --section-space: 90px; }
+  .wrap { width: calc(100% - 72px); }
+  .site-header { gap: 20px; }
+  .site-header nav { gap: 15px; font-size: 10px; }
+  .brand-link > span { font-size: 19px; }
+  .brand-link small { font-size: 6px; }
+  .hero { gap: 40px; }
+  .hero h1 { font-size: 49px; }
+  .hero-image { min-height: 610px; }
+  .hero-links { gap: 20px; }
+  .hero-origin { font-size: 9px; }
+  .hero-origin span { display: block; margin-left: 0; margin-top: 6px; }
+  .about-layout, .craft-layout, .shops-layout { gap: 60px; }
+  .community-layout, .contact-layout { gap: 60px; }
+  .menu-grid { gap: 24px; }
+  .menu-end { align-items: flex-start; }
+  .shop-card h3 > span { display: block; margin-left: 0; margin-top: 5px; }
+  .contact h2 { font-size: 28px; }
 }
 
-/* 【ヘッダー】PCは横並び、スマホは下のメディアクエリーで目次を2行目へ。
-   名前はテキスト表示。正式なクマロゴは紹介セクションで元データから書き出したものを使用。 */
-.site-header {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  min-height:106px;
-  gap:28px
+/* 【スマホ】目次は2行目。写真・本文は1列、商品だけは2列から1列へ。
+   写真枠の比率を保ち、枠の説明が切れないよう高さにも余裕を取る。
+   overflow:hiddenで横はみ出しをごまかさない。長い言葉は折り返しを確認する。 */
+@media (max-width: 800px) {
+  .site-header { flex-wrap: wrap; padding-block: 24px 20px; row-gap: 18px; }
+  .site-header nav { order: 3; width: 100%; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; font-size: 11px; }
+  .header-instagram { margin-left: auto; }
+  .hero { padding-top: 30px; gap: 34px; }
+  .hero-copy { padding-block: 10px; }
+  .hero h1 { font-size: 43px; }
+  .hero-description { font-size: 12px; }
+  .hero-links { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .hero-image { min-height: 540px; }
+  .hero-origin { padding-top: 30px; }
+  .about-layout { gap: 40px; }
+  .about h2 { font-size: 34px; }
+  .about-copy .lead { font-size: 14px; }
+  .about-copy p { font-size: 12px; }
+  .craft-layout, .shops-layout { grid-template-columns: 1fr 1fr; gap: 35px; align-items: start; }
+  .craft-copy h2, .shop-copy h2 { font-size: 28px; }
+  .craft-copy > p:not(.eyebrow):not(.small-note) { font-size: 12px; }
+  .craft-details dd { margin-left: 0; }
+  .menu-grid { gap: 20px; }
+  .menu-title h3 { font-size: 18px; }
+  .menu-image.image-placeholder p { font-size: 11px; }
+  .menu-image .placeholder-kicker { font-size: 8px; margin-bottom: 10px; }
+  .menu-image .placeholder-kicker::before { margin-bottom: 12px; }
+  .menu-end { flex-direction: column; gap: 20px; }
+  .community-layout, .contact-layout { grid-template-columns: 1fr 1fr; gap: 35px; }
+  .community h2 { font-size: 29px; }
+  .faq-layout { grid-template-columns: 1fr 1.3fr; gap: 35px; }
+  .faq h2 { font-size: 26px; }
+  .contact h2 { font-size: 26px; }
 }
-.wordmark {
-  font-size:36px;
-  font-weight:800;
-  letter-spacing:-.07em;
-  line-height:1;
-  white-space:nowrap
+@media (max-width: 600px) {
+  :root { --section-space: 66px; }
+  .wrap { width: calc(100% - 40px); }
+  .preview-note { font-size: 9px; padding: 7px 16px; }
+  .site-header { padding-top: 22px; }
+  .brand-link { gap: 10px; }
+  .brand-link img { width: 38px; height: 39px; }
+  .brand-link > span { font-size: 19px; }
+  .brand-link small { font-size: 6px; letter-spacing: .08em; margin-top: 6px; }
+  .site-header nav { font-size: 10px; gap: 10px 12px; }
+  .header-instagram { font-size: 10px; gap: 15px; }
+  .hero { grid-template-columns: 1fr; padding-top: 30px; padding-bottom: 55px; gap: 36px; }
+  .hero-copy { padding: 0 7px; }
+  .hero .eyebrow { font-size: 9px; }
+  .hero h1 { font-size: clamp(42px, 11.5vw, 61px); line-height: 1.6; margin-top: 26px; }
+  .hero-description { margin-top: 24px; font-size: 12px; line-height: 2.3; }
+  .hero-links { flex-direction: row; gap: 25px; margin-top: 26px; align-items: center; }
+  .button { min-width: 130px; font-size: 11px; gap: 30px; }
+  .quiet-link { font-size: 10px; }
+  .hero-origin { margin-top: 25px; padding-top: 0; font-size: 9px; }
+  .hero-origin span { display: inline; margin-left: 10px; }
+  .hero-image { min-height: 430px; height: auto; }
+  .hero-visual figcaption { font-size: 7px; gap: 10px; }
+  .image-placeholder { padding: 68px 20px; }
+  .image-placeholder p { font-size: 12px; }
+  .image-index, .image-direction { left: 20px; right: 20px; font-size: 8px; }
+  .image-index { top: 20px; }
+  .image-direction { bottom: 20px; }
+  .section-label { margin-bottom: 36px; padding-top: 15px; font-size: 9px; gap: 12px; }
+  .section-label > span:first-child { letter-spacing: .1em; }
+  .section-label > span:last-child { letter-spacing: 0; }
+  h2 { font-size: 31px; line-height: 1.8; letter-spacing: .025em; }
+  .about { padding-top: 25px; }
+  .about-layout, .craft-layout, .shops-layout, .community-layout, .contact-layout, .faq-layout { grid-template-columns: 1fr; gap: 32px; }
+  .about-layout { padding-inline: 7px; }
+  .about h2 { font-size: 35px; }
+  .about-copy .lead { font-size: 15px; }
+  .about-copy p { font-size: 13px; }
+  .craft-copy h2, .shop-copy h2 { font-size: 31px; margin-top: 18px; }
+  .craft-copy .eyebrow { font-size: 9px; }
+  .craft-copy > p:not(.eyebrow):not(.small-note) { font-size: 13px; }
+  .craft-details { margin-top: 30px; }
+  .craft-details dd { margin-left: 38px; font-size: 11px; }
+  .craft-image { aspect-ratio: 4 / 4.5; }
+  .section-heading { flex-direction: column; align-items: flex-start; gap: 18px; margin-bottom: 30px; }
+  .section-heading .eyebrow { font-size: 9px; margin-bottom: 12px; }
+  .section-heading > p { font-size: 12px; }
+  .menu-grid { grid-template-columns: 1fr; gap: 38px; }
+  .menu-title { margin-top: 18px; padding-top: 15px; }
+  .menu-title h3 { font-size: 22px; }
+  .menu-meta { margin-top: 18px; }
+  .menu-item > p { margin-top: 11px; }
+  .menu-image.image-placeholder p { font-size: 12px; }
+  .menu-image .placeholder-kicker { font-size: 9px; margin-bottom: 20px; }
+  .menu-image .placeholder-kicker::before { margin-bottom: 24px; }
+  .menu-end { margin-top: 30px; }
+  .section-footnote { font-size: 10px; }
+  .community h2 { font-size: 29px; }
+  .community-copy > p { font-size: 13px; }
+  .shop-image { aspect-ratio: 5 / 5.5; }
+  .shop-card h3 > span { display: inline; margin-left: 12px; font-size: 10px; }
+  .news .section-heading { flex-direction: row; align-items: center; gap: 18px; }
+  .news h2 { font-size: 25px; }
+  .news .text-link { font-size: 10px; gap: 18px; flex-shrink: 0; }
+  summary { min-height: 76px; gap: 14px; font-size: 12px; padding-block: 17px; }
+  .news-category { min-width: 65px; font-size: 9px; }
+  .inline-sample { display: block; margin: 3px 0 0; font-size: 8px; }
+  .expand-mark { font-size: 17px; }
+  details > p { padding: 0 10px 22px; font-size: 12px; }
+  .faq { padding-top: 25px; }
+  .faq h2 { font-size: 27px; }
+  .contact h2 { font-size: 27px; margin-top: 20px; }
+  .contact-layout { gap: 30px; }
+  .instagram-card { padding-top: 10px; }
+  .instagram-card strong { font-size: 28px; }
+  .site-footer { padding-top: 40px; }
+  .footer-top { flex-wrap: wrap; gap: 25px; }
+  .footer-top > p { font-size: 10px; }
+  .back-top { width: 100%; margin-left: 0; }
+  .site-footer nav { gap: 12px 22px; margin-top: 25px; font-size: 10px; }
+  .footer-bottom { margin-top: 28px; padding-top: 20px; }
+  .policy h1 { font-size: 26px; }
+  .policy h2 { font-size: 22px; }
 }
-.wordmark>span:first-child {
-  font-size:18px;
-  letter-spacing:-.07em;
-  vertical-align:middle
-}
-.brand-dot {
-  color:var(--terracotta)
-}
-.site-header nav {
-  display:flex;
-  gap:28px;
-  font-size:12px;
-  font-weight:550
-}
-.header-instagram {
-  font-size:11px;
-  border-bottom:1px solid var(--brown);
-  padding-bottom:4px
-}
-.header-instagram>span[aria-hidden] {
-  margin-left:18px;
-  font-size:18px
-}
-
-/* 【ヒーロー】左右をGridで分ける。見出しの大きさはclampで画面幅に応じて変化。
-   写真の切り取りはobject-fit、被写体の位置はobject-position。元写真は破壊しません。 */
-.hero {
-  display:grid;
-  grid-template-columns:1fr 1.04fr;
-  min-height:650px;
-  padding-bottom:56px;
-  gap:40px
-}
-.hero-copy {
-  padding:54px 0 0;
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start
-}
-.tiny-dot {
-  display:inline-block;
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:var(--terracotta);
-  margin-right:10px;
-  vertical-align:middle
-}
-.hero h1 {
-  font-size:clamp(40px,4.25vw,65px);
-  letter-spacing:-.045em;
-  line-height:1.55;
-  margin-top:33px;
-  font-weight:750
-}
-.period {
-  color:var(--terracotta)
-}
-.hero-description {
-  margin-top:24px;
-  line-height:2.2;
-  font-size:14px
-}
-.button {
-  display:inline-flex;
-  align-items:center;
-  gap:40px;
-  background:var(--sand);
-  color:var(--brown);
-  padding:15px 22px;
-  font-size:12px;
-  border-radius:var(--radius);
-  margin-top:32px
-}
-.button span {
-  font-size:22px
-}
-.button:hover {
-  background:var(--brown);
-  color:var(--cream);
-  text-decoration:none
-}
-.hero-bottom {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  width:100%;
-  font-size:9px;
-  margin-top:auto;
-  padding-top:40px;
-  letter-spacing:.08em
-}
-.hero-bottom a {
-  font-size:9px
-}
-.hero-bottom a span {
-  margin-left:14px;
-  font-size:20px
-}
-.hero-visual {
-  position:relative;
-  min-width:0;
-  min-height:590px;
-  border-radius:160px 4px 4px 4px;
-  isolation:isolate
-}
-.hero-photo {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:50% 50%;
-  position:absolute;
-  border-radius:inherit
-}
-.hero-visual:after {
-  content:"";
-  position:absolute;
-  inset:50% 0 0;
-  background:linear-gradient(transparent,rgba(54,35,24,.45));
-  border-radius:inherit;
-  z-index:0
-}
-.photo-note {
-  position:absolute;
-  bottom:25px;
-  left:28px;
-  font-size:9px;
-  letter-spacing:.12em;
-  color:var(--cream);
-  z-index:1
-}
-.local-stamp {
-  position:absolute;
-  right:-16px;
-  top:34px;
-  background:var(--sand);
-  color:var(--brown);
-  width:130px;
-  height:130px;
-  border-radius:50%;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  transform:rotate(10deg);
-  z-index:1;
-  box-shadow:0 0 0 6px var(--cream)
-}
-.local-stamp span:first-child {
-  font-size:10px
-}
-.local-stamp strong {
-  font-size:17px;
-  font-weight:700
-}
-.local-stamp span:last-child {
-  font-size:7px;
-  letter-spacing:.1em;
-  margin-top:4px
-}
-.ribbon {
-  background:var(--cream);
-  border-block:1px solid var(--line);
-  display:flex;
-  justify-content:space-around;
-  gap:25px;
-  overflow:hidden;
-  padding:16px 24px;
-  font-size:11px;
-  letter-spacing:.12em;
-  font-weight:600
-}
-.ribbon span {
-  white-space:nowrap
-}
-.ribbon span:nth-child(2) {
-  font-size:12px
+@media (max-width: 360px) {
+  .site-header nav { justify-content: flex-start; gap: 8px 16px; }
+  .hero-links { gap: 18px; }
+  .quiet-link { font-size: 9px; }
+  .hero-origin span { display: block; margin-left: 0; margin-top: 4px; }
+  .news .section-heading { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .shop-card h3 > span { display: block; margin-left: 0; margin-top: 5px; }
 }
 
-/* 【共通見出し】各カテゴリーに番号と日英ラベルを置く。番号は表示用なので自由に変更可。
-   h2の文章を短くすると余白が増える。長文を入れる時は横幅の狭い画面で確認。 */
-.section-label {
-  display:flex;
-  justify-content:space-between;
-  border-top:1px solid var(--line);
-  padding-top:17px;
-  font-size:10px;
-  letter-spacing:.1em;
-  margin-bottom:60px
-}
-.section-label span:last-child {
-  letter-spacing:.04em
-}
-h2 {
-  font-size:clamp(28px,3vw,43px);
-  letter-spacing:-.035em;
-  font-weight:700;
-  line-height:1.65
-}
-.section-heading {
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-  gap:30px;
-  margin-bottom:42px
-}
-.section-heading .eyebrow {
-  margin-bottom:13px
-}
-.section-heading>p {
-  font-size:13px
-}
-.text-link {
-  font-size:12px;
-  border-bottom:1px solid currentColor;
-  padding-bottom:7px;
-  display:inline-flex;
-  align-items:center;
-  gap:30px
-}
-.text-link span[aria-hidden] {
-  font-size:20px
-}
-.about-layout {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  align-items:center;
-  gap:100px;
-  max-width:990px;
-  margin:auto
-}
-.about-art {
-  background:var(--cream);
-  aspect-ratio:1;
-  max-width:390px;
-  border-radius:50% 50% 8px 8px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:60px
-}
-.about-art img {
-  width:235px;
-  max-height:230px;
-  object-fit:contain
-}
-.about-art>span {
-  font-size:10px;
-  letter-spacing:.1em;
-  margin-top:25px
-}
-.about-copy p {
-  margin-top:23px;
-  font-size:13px;
-  line-height:2.3
-}
-
-/* 【商品一覧】3列のGrid。写真枠の高さを揃え、写真自体の縦横比は保持。
-   商品を増やしても列数を手計算しない。並び替えはHTMLの記事順を変更するだけ。
-   CLASSIC MENUのグレージュは商品名の帯だけに使い、セクションの地は生成り。
-   QUICK MENUのように分類を大きな色見出しで示す。小さな説明文まで同じ色にしない。 */
-.menu-section {
-  background:var(--cream)
-}
-.menu-section .section-label {
-  border-color:var(--stone)
-}
-.menu-section h2 {
-  color:var(--terracotta)
-}
-.menu-grid {
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:28px
-}
-.menu-image {
-  position:relative;
-  overflow:hidden;
-  aspect-ratio:1.1;
-  background:var(--cream);
-  border-radius:100px 3px 3px 3px
-}
-.menu-image img {
-  height:100%;
-  width:100%;
-  object-fit:cover
-}
-.menu-item:first-child .menu-image img {
-  object-fit:contain;
-  background:#d8d1ce
-}
-.item-number {
-  position:absolute;
-  z-index:1;
-  top:18px;
-  right:20px;
-  font-size:11px
-}
-.menu-title {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  background:var(--stone);
-  padding:8px 10px;
-  margin-top:22px;
-  gap:12px
-}
-.menu-title h3 {
-  font-size:21px;
-  font-weight:650
-}
-.menu-title>span {
-  font-size:9px;
-  letter-spacing:.12em
-}
-.menu-item>p {
-  font-size:11px;
-  margin-top:10px
-}
-.menu-meta {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  font-size:11px;
-  border-top:1px solid var(--taupe);
-  margin-top:18px;
-  padding-top:13px
-}
-.section-footnote {
-  margin-top:30px
-}
-.community-layout {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:70px
-}
-.community h2 {
-  color:var(--sage)
-}
-.community-layout>div>p {
-  font-size:13px;
-  line-height:2.3
-}
-.coming-soon {
-  border-left:3px solid var(--sage);
-  padding:12px 0 12px 25px;
-  margin-top:30px
-}
-.coming-soon h3 {
-  font-size:17px;
-  margin-top:12px
-}
-.coming-soon p {
-  font-size:12px;
-  margin-top:10px
-}
-
-/* 【店舗案内】CLASSIC MENUのように生成りの地と、項目を示す小さな帯を使う。
-   住所確定まではダミー枠を明示。店舗名の帯だけがグレージュ、本文は茶色。
-   店舗追加時も面全体をベージュで塗らず、地と強調の役割を揃える。 */
-.shops-section {
-  background:var(--cream)
-}
-.shops-section .section-label {
-  border-color:var(--stone)
-}
-.shops-layout {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:80px;
-  align-items:center
-}
-.shops-layout h2 {
-  margin-top:16px
-}
-.shops-layout>div>p:not(.eyebrow) {
-  margin-top:23px;
-  font-size:13px
-}
-.shops-layout .text-link {
-  margin-top:27px
-}
-.shop-card {
-  background:var(--cream);
-  border:1px solid var(--stone);
-  padding:35px;
-  border-radius:var(--radius)
-}
-.shop-card h3 {
-  background:var(--stone);
-  padding:8px 12px;
-  font-size:27px;
-  margin-top:20px
-}
-.shop-card h3 span {
-  display:block;
-  font-size:13px;
-  margin-top:5px;
-  font-weight:500
-}
-dl {
-  margin:25px 0 0
-}
-dl>div {
-  display:grid;
-  grid-template-columns:85px 1fr;
-  gap:16px;
-  border-top:1px solid var(--line);
-  padding:12px 0;
-  font-size:12px
-}
-dt {
-  font-weight:600
-}
-dd {
-  margin:0
-}
-
-/* 【開閉UI】detailsはブラウザー標準の開閉部品。summary全体が押せる。
-   見た目だけのリンクにしない。open属性を付けると最初から開いた状態になります。 */
-details {
-  border-bottom:1px solid var(--line)
-}
-summary {
-  cursor:pointer;
-  list-style:none;
-  min-height:76px;
-  display:flex;
-  align-items:center;
-  gap:24px;
-  padding:18px 0;
-  font-size:13px
-}
-summary::-webkit-details-marker {
-  display:none
-}
-summary:hover {
-  color:var(--rust)
-}
-details[open] summary {
-  color:var(--rust)
-}
-details[open] .expand-mark {
-  transform:rotate(45deg)
-}
-details>p {
-  font-size:12px;
-  line-height:2;
-  padding:0 20px 24px
-}
-.news-list {
-  border-top:1px solid var(--line)
-}
-.news-category {
-  font-size:10px;
-  min-width:80px;
-  border:1px solid var(--line);
-  text-align:center;
-  padding:2px 8px
-}
-.inline-sample {
-  font-size:8px;
-  color:var(--rust);
-  margin-left:10px;
-  letter-spacing:.08em
-}
-.expand-mark {
-  margin-left:auto;
-  font-size:21px;
-  transition:transform .2s
-}
-.faq {
-  padding-top:0
-}
-.faq-layout {
-  display:grid;
-  grid-template-columns:.8fr 1.2fr;
-  gap:70px
-}
-.faq-list {
-  border-top:1px solid var(--line)
-}
-.faq summary {
-  justify-content:space-between;
-  gap:20px
-}
-.faq summary span {
-  font-size:20px
-}
-.contact {
-  background:var(--cream);
-  color:var(--brown);
-  border-block:1px solid var(--line)
-}
-.contact-layout {
-  display:grid;
-  grid-template-columns:1.2fr 1fr;
-  gap:80px;
-  align-items:center
-}
-.contact .eyebrow {
-  color:var(--rust);
-  margin-bottom:20px
-}
-.contact h2 {
-  font-size:31px
-}
-.contact p:not(.eyebrow) {
-  font-size:13px;
-  margin-top:22px
-}
-.instagram-card {
-  display:flex;
-  flex-direction:column;
-  border:1px solid var(--taupe);
-  padding:26px 30px;
-  gap:15px;
-  border-radius:var(--radius)
-}
-.instagram-card>span {
-  font-size:10px;
-  letter-spacing:.1em
-}
-.instagram-card strong {
-  font-size:26px;
-  font-weight:500;
-  letter-spacing:-.035em
-}
-.instagram-card>span:last-of-type {
-  display:flex;
-  justify-content:space-between
-}
-.instagram-card:hover {
-  border-color:var(--brown);
-  text-decoration:none
-}
-.site-footer {
-  padding-block:50px 20px
-}
-.footer-top {
-  display:flex;
-  align-items:center;
-  gap:35px
-}
-.footer-top p {
-  font-size:11px
-}
-.back-top {
-  margin-left:auto;
-  font-size:10px
-}
-.site-footer nav {
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px 25px;
-  font-size:10px;
-  margin-top:35px
-}
-.footer-bottom {
-  display:flex;
-  justify-content:space-between;
-  border-top:1px solid var(--line);
-  margin-top:30px;
-  padding-top:18px;
-  font-size:10px
-}
-.policy {
-  max-width:800px;
-  min-height:65vh
-}
-.policy h1 {
-  font-size:34px
-}
-.policy h2 {
-  font-size:23px;
-  margin-top:35px
-}
-.policy p,.policy ul {
-  font-size:14px;
-  margin-top:20px
-}
-
-/* 【レスポンシブ】メディアクエリーは指定幅以下の画面だけに適用。
-   PC用ルールを消すのではなく上書きする。スマホでの横はみ出しをoverflow:hiddenで隠さない。 */
-@media(min-width:1500px) {
-  .hero h1 {
-    font-size:65px
-  }
-  .hero {
-    min-height:710px
-  }
-  .hero-visual {
-    min-height:640px
-  }
-}
-@media(max-width:1000px) {
-  .wrap {
-    width:calc(100% - 56px)
-  }
-  .site-header {
-    gap:20px
-  }
-  .site-header nav {
-    gap:18px;
-    font-size:11px
-  }
-  .hero {
-    gap:25px;
-    min-height:590px
-  }
-  .hero-copy {
-    padding-top:30px
-  }
-  .hero h1 {
-    font-size:45px
-  }
-  .hero-visual {
-    min-height:540px;
-    border-top-left-radius:120px
-  }
-  .hero .eyebrow {
-    font-size:8px
-  }
-  .local-stamp {
-    width:108px;
-    height:108px;
-    right:-10px
-  }
-  .local-stamp strong {
-    font-size:15px
-  }
-  .about-layout {
-    gap:50px
-  }
-  .about-art {
-    padding:45px
-  }
-  .about-art>span {
-    font-size:8px
-  }
-  .shops-layout,.community-layout,.faq-layout,.contact-layout {
-    gap:40px
-  }
-  .menu-grid {
-    gap:18px
-  }
-  .menu-title h3 {
-    font-size:18px
-  }
-  .menu-title>span {
-    font-size:8px
-  }
-  .menu-meta {
-    align-items:flex-start;
-    flex-direction:column
-  }
-  .section {
-    padding-block:80px
-  }
-  .faq {
-    padding-top:0
-  }
-  .contact h2 {
-    font-size:26px
-  }
-  .instagram-card strong {
-    font-size:23px
-  }
-  .shop-card {
-    padding:25px
-  }
-}
-@media(max-width:700px) {
-  .wrap {
-    width:calc(100% - 40px)
-  }
-  .preview-note {
-    font-size:9px;
-    line-height:1.8;
-    padding:7px 16px
-  }
-  .site-header {
-    min-height:110px;
-    flex-wrap:wrap;
-    padding-block:20px 16px;
-    gap:18px
-  }
-  .wordmark {
-    font-size:32px
-  }
-  .wordmark>span:first-child {
-    font-size:16px
-  }
-  .site-header nav {
-    order:3;
-    width:100%;
-    justify-content:space-between;
-    gap:8px;
-    font-size:10px
-  }
-  .header-instagram {
-    margin-left:auto;
-    font-size:10px
-  }
-  .hero {
-    grid-template-columns:1fr;
-    gap:28px;
-    padding-bottom:30px
-  }
-  .hero-copy {
-    padding-top:22px
-  }
-  .hero h1 {
-    font-size:clamp(36px,10.5vw,57px);
-    margin-top:20px;
-    line-height:1.55
-  }
-  .hero .eyebrow {
-    font-size:8px
-  }
-  .hero-description {
-    font-size:13px;
-    margin-top:20px
-  }
-  .button {
-    padding:13px 20px;
-    margin-top:24px;
-    font-size:11px;
-    gap:28px
-  }
-  .hero-bottom {
-    display:none
-  }
-  .hero-visual {
-    min-height:0;
-    height:420px;
-    border-top-left-radius:110px;
-    margin-right:8px
-  }
-  .hero-photo {
-    object-position:50% 48%
-  }
-  .local-stamp {
-    top:22px;
-    right:-8px;
-    width:108px;
-    height:108px
-  }
-  .ribbon {
-    justify-content:center;
-    padding-block:13px
-  }
-  .ribbon span:first-child {
-    display:none
-  }
-  .ribbon span {
-    font-size:9px
-  }
-  .ribbon span:nth-child(2) {
-    font-size:10px
-  }
-  .section {
-    padding-block:60px
-  }
-  .section-label {
-    margin-bottom:34px;
-    font-size:9px;
-    padding-top:13px
-  }
-  .section-label span:last-child {
-    font-size:9px
-  }
-  h2 {
-    font-size:29px
-  }
-  .about-layout {
-    grid-template-columns:1fr;
-    gap:35px
-  }
-  .about-art {
-    max-width:270px;
-    width:100%;
-    margin-inline:auto;
-    padding:45px
-  }
-  .about-art img {
-    width:160px;
-    max-height:160px
-  }
-  .about-art>span {
-    font-size:8px;
-    margin-top:16px
-  }
-  .about-copy {
-    padding-inline:10px
-  }
-  .about-copy p {
-    font-size:13px;
-    margin-top:20px
-  }
-  .small-note {
-    font-size:10px
-  }
-  .section-heading {
-    align-items:flex-start;
-    flex-direction:column;
-    gap:18px;
-    margin-bottom:30px
-  }
-  .section-heading>p {
-    font-size:12px
-  }
-  .menu-grid {
-    grid-template-columns:1fr;
-    gap:34px
-  }
-  .menu-image {
-    aspect-ratio:1.25;
-    border-top-left-radius:100px
-  }
-  .menu-item:first-child .menu-image img {
-    object-fit:contain
-  }
-  .menu-title h3 {
-    font-size:23px
-  }
-  .menu-title>span {
-    font-size:9px
-  }
-  .menu-title {
-    margin-top:17px
-  }
-  .menu-meta {
-    flex-direction:row;
-    align-items:center
-  }
-  .menu-item>p {
-    font-size:12px
-  }
-  .section-footnote {
-    font-size:10px
-  }
-  .community-layout,.shops-layout,.faq-layout,.contact-layout {
-    grid-template-columns:1fr;
-    gap:30px
-  }
-  .community-layout>div>p {
-    font-size:12px
-  }
-  .shops-layout h2 {
-    margin-top:10px
-  }
-  .shop-card {
-    padding:25px
-  }
-  .news-category {
-    min-width:66px;
-    font-size:9px
-  }
-  .news summary {
-    gap:14px;
-    font-size:12px
-  }
-  .inline-sample {
-    display:block;
-    margin-left:0;
-    font-size:8px
-  }
-  .news .text-link {
-    font-size:11px
-  }
-  summary {
-    font-size:12px;
-    min-height:76px
-  }
-  .faq {
-    padding-top:0
-  }
-  .faq h2 br {
-    display:none
-  }
-  .faq h2 {
-    font-size:27px
-  }
-  .contact h2 {
-    font-size:27px
-  }
-  .instagram-card {
-    padding:24px
-  }
-  .instagram-card strong {
-    font-size:26px
-  }
-  .footer-top {
-    gap:20px;
-    flex-wrap:wrap
-  }
-  .footer-top p {
-    font-size:10px
-  }
-  .back-top {
-    width:100%;
-    margin-left:0;
-    margin-top:5px
-  }
-  .site-footer nav {
-    font-size:10px;
-    gap:12px 20px;
-    margin-top:25px
-  }
-  .footer-bottom {
-    font-size:9px
-  }
-  .policy h1 {
-    font-size:26px
-  }
-  .policy h2 {
-    font-size:21px
-  }
-}
-
-/* 【動きを減らす設定】端末でアニメーションを減らしている人には即時移動。
-   新しく動きを追加する時もこの条件を尊重。自動スライダー等は現状ありません。 */
-@media(prefers-reduced-motion:reduce) {
-  html {
-    scroll-behavior:auto
-  }
-  *,*:before,*:after {
-    transition:none!important;
-    animation:none!important
-  }
-}
-
-/* 【正式ロゴ】ユーザー確認済みのクマを共通ヘッダーとフッターに使用。
-   文字はブランド名の補足。ロゴの形をCSSで描き直さず、元のPNGを参照します。 */
-.brand-link {
-  display:inline-flex;
-  align-items:center;
-  gap:12px;
-  flex-shrink:0;
-  line-height:1.2
-}
-.brand-link img {
-  width:60px;
-  height:61px;
-  object-fit:contain
-}
-.brand-link>span {
-  font-size:18px;
-  font-weight:700;
-  letter-spacing:-.03em
-}
-.brand-link:hover {
-  text-decoration:none
-}
-@media(max-width:700px) {
-  .brand-link img {
-    width:45px;
-    height:46px
-  }
-  .brand-link>span {
-    font-size:16px
-  }
-  .brand-link {
-    gap:9px
-  }
+/* 【動きを減らす】端末設定を尊重。動きなしでも全ての情報・操作を利用できる。
+   新しいアニメーションを追加する場合もこの条件で止まるようにする。 */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }
